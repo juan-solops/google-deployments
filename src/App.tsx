@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { categories, destinationsList, beaches, activities, practicalInfo, culturalEvents } from './data';
-import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock } from 'lucide-react';
+import { categories, destinationsList, beaches, activities, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
+import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin, useApiLoadingStatus, APILoadingStatus } from '@vis.gl/react-google-maps';
 import { i18n, languages, Language } from './i18n';
 import { GoogleGenAI } from '@google/genai';
@@ -123,6 +123,25 @@ export default function App() {
              <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife // South</div>
              
              <div className="flex items-center gap-6">
+                <div className="relative group mr-4 hidden sm:block">
+                  <Menu size={14} className="text-white/20 absolute left-3 top-1/2 -translate-y-1/2 rotate-90" />
+                  <input
+                    type="text"
+                    placeholder={lang === 'EN' ? "SEARCH..." : "BUSCAR..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="bg-white/5 border border-white/10 py-1.5 pl-9 pr-8 w-24 focus:w-40 transition-all duration-500 text-[9px] uppercase tracking-[0.2em] text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 rounded-sm"
+                  />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+                    >
+                      <X size={10} />
+                    </button>
+                  )}
+                </div>
+
                 <div className="relative">
                   <button 
                     onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
@@ -182,10 +201,10 @@ export default function App() {
 
         {/* Navigation */}
         <div className="sticky top-0 z-30 bg-[#0A0A0A]/90 backdrop-blur-md border-y border-white/10">
-          <div className="max-w-6xl mx-auto px-8 flex justify-between items-center h-16 md:h-auto gap-4">
+          <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex overflow-x-auto hide-scrollbar py-4 flex-grow">
-              <div className="flex gap-8 min-w-max">
+            <nav className="hidden md:flex overflow-x-auto hide-scrollbar py-4 flex-1">
+              <div className="flex gap-4 lg:gap-8 min-w-max pr-8">
                 {categories.map((category) => {
                   const Icon = category.icon;
                   const isActive = activeTab === category.id;
@@ -195,7 +214,7 @@ export default function App() {
                     <button
                       key={category.id}
                       onClick={() => handleTabChange(category.id)}
-                      className={`flex items-center gap-2 text-[10px] tracking-[0.2em] font-medium uppercase transition-all ${
+                      className={`flex items-center gap-2 text-[10px] tracking-widest font-medium uppercase transition-all whitespace-nowrap ${
                         isActive 
                           ? 'text-white border-b-2 border-[#F27D26] pb-1' 
                           : 'text-white/50 hover:text-white pb-1'
@@ -208,28 +227,6 @@ export default function App() {
                 })}
               </div>
             </nav>
-
-            {/* Search Input */}
-            <div className="flex-grow max-w-xs relative hidden sm:block">
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-white/30">
-                <Menu size={14} className="rotate-90" />
-              </div>
-              <input
-                type="text"
-                placeholder={lang === 'EN' ? "Search..." : "Buscar..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 py-1.5 pl-10 pr-4 text-[10px] uppercase tracking-widest text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 transition-colors"
-              />
-              {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-3 flex items-center text-white/30 hover:text-white"
-                >
-                  <X size={12} />
-                </button>
-              )}
-            </div>
 
             {/* Mobile Navigation Header */}
             <div className="flex md:hidden items-center justify-between w-full h-full py-4">
@@ -331,6 +328,7 @@ export default function App() {
               {activeTab === 'overview' && <OverviewSection t={t} onImageClick={setFullScreenImage} />}
               {activeTab === 'destinations' && <DestinationsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'beaches' && <BeachesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
+              {activeTab === 'localEats' && <LocalEatsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'activities' && <ActivitiesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'agenda' && <AgendaSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'practical' && <PracticalSection t={t} />}
@@ -441,7 +439,9 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
         whatToBring: item.whatToBring,
         nearbyRecommendations: item.nearbyRecommendations,
         safetyTips: item.safetyTips,
-        schedule: item.schedule
+        schedule: item.schedule,
+        specialty: item.specialty,
+        priceLevel: item.priceLevel
       })}`;
 
       const result = await ai.models.generateContent({
@@ -555,6 +555,44 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
           </p>
 
           <div className="space-y-12">
+            {item.specialty && (
+              <div className="border-t border-white/10 pt-8">
+                <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold block mb-4">{t.specialty}</span>
+                <div className="text-xl text-white font-light italic">
+                  "{display.specialty || item.specialty}"
+                </div>
+              </div>
+            )}
+
+            {item.priceLevel && (
+              <div className="border-t border-white/10 pt-8">
+                <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-4">{t.priceLevel}</span>
+                <div className="flex gap-1">
+                  {[1, 2, 3].map(i => (
+                    <span key={i} className={`text-xl ${i <= item.priceLevel.length ? 'text-[#F27D26]' : 'text-white/10'}`}>$</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {item.rating && (
+              <div className="border-t border-white/10 pt-8">
+                <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-4">{t.rating}</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <Star 
+                        key={i} 
+                        size={20} 
+                        className={`${i <= Math.round(item.rating) ? 'fill-[#F27D26] text-[#F27D26]' : 'text-white/10'}`} 
+                      />
+                    ))}
+                  </div>
+                  <span className="text-2xl text-white font-mono">{item.rating}</span>
+                </div>
+              </div>
+            )}
+
             {display.schedule && (
               <div className="border-t border-white/10 pt-8">
                 <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-6 flex items-center gap-2">
@@ -704,6 +742,14 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
                 <div className="h-[300px] w-full border border-white/10 bg-[#111] overflow-hidden">
                   <POIMap item={item} />
                 </div>
+                
+                {item.address && (
+                  <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-sm">
+                    <span className="text-[9px] uppercase tracking-widest text-white/40 block mb-1">Exact Address</span>
+                    <p className="text-sm text-white/80 font-light">{item.address}</p>
+                  </div>
+                )}
+
                 <div className="mt-4 flex justify-between items-center text-xs text-white/40 font-mono">
                   <span>{item.lat.toFixed(4)}° N, {Math.abs(item.lng).toFixed(4)}° W</span>
                   <a 
@@ -715,6 +761,19 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
                     Open in Google Maps <ExternalLink size={12} />
                   </a>
                 </div>
+
+                {(item.website || item.officialLink) && (
+                  <div className="mt-6 pt-6 border-t border-white/5">
+                    <a 
+                      href={item.website || item.officialLink} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[10px] font-bold uppercase tracking-widest px-6 py-3 transition-colors rounded-sm w-full justify-center"
+                    >
+                      Visit Official Website <ExternalLink size={14} />
+                    </a>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1030,6 +1089,60 @@ function BeachesSection({ onSelect, t, searchQuery }: { onSelect: (item: any) =>
         </AnimatePresence>
       </div>
     </article>
+  );
+}
+
+function LocalEatsSection({ onSelect, t, searchQuery }: { onSelect: (item: Restaurant) => void; t: any; searchQuery: string }) {
+  const filteredEats = localEats.filter(eat => {
+    const searchStr = searchQuery.toLowerCase();
+    return eat.name.toLowerCase().includes(searchStr) || 
+           eat.location.toLowerCase().includes(searchStr) ||
+           eat.description.toLowerCase().includes(searchStr) ||
+           eat.specialty.toLowerCase().includes(searchStr);
+  });
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {filteredEats.map((eat, i) => (
+        <motion.div
+          key={eat.name}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+          onClick={() => onSelect(eat)}
+          className="group cursor-pointer"
+        >
+          <div className="aspect-[16/10] overflow-hidden bg-white/5 mb-4 border border-white/5 relative">
+            <img 
+              src={eat.image} 
+              alt={eat.name} 
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute top-4 left-4 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-sm border border-white/10">
+              <Star size={10} className="fill-[#F27D26] text-[#F27D26]" />
+              <span className="text-[10px] font-bold text-white">{eat.rating}</span>
+            </div>
+            <div className="absolute top-4 right-4 flex gap-1">
+              {eat.priceLevel.split('').map((s, idx) => (
+                <span key={idx} className="text-[#F27D26] text-xs font-bold leading-none bg-black/50 backdrop-blur-md p-1 rounded-sm border border-[#F27D26]/20">{s}</span>
+              ))}
+            </div>
+            <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-2 py-1 text-[8px] uppercase tracking-[0.2em] text-white/50">
+              {eat.type}
+            </div>
+          </div>
+          <h3 className="text-xl text-white font-light tracking-tight group-hover:text-[#F27D26] transition-colors mb-2">{eat.name}</h3>
+          <div className="flex items-center gap-2 text-white/40 text-[10px] uppercase tracking-widest mb-3">
+            <MapPin size={10} className="text-[#F27D26]" />
+            {eat.location}
+          </div>
+          <p className="text-sm text-white/60 font-light line-clamp-2 leading-relaxed italic">
+            "{eat.specialty}"
+          </p>
+        </motion.div>
+      ))}
+    </div>
   );
 }
 

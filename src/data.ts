@@ -5,6 +5,7 @@ export const categories = [
   { id: "destinations", label: "Top Destinations", icon: MapPin },
   { id: "beaches", label: "Best Beaches", icon: Umbrella },
   { id: "activities", label: "Activities", icon: Camera },
+  { id: "localEats", label: "Eat Like a Local", icon: Utensils },
   { id: "agenda", label: "Cultural Agenda", icon: Calendar },
   { id: "practical", label: "Practical Info", icon: Map },
 ];
@@ -22,6 +23,8 @@ export interface Event {
   image: string;
   lat: number;
   lng: number;
+  address?: string;
+  website?: string;
   highlights?: string[];
   schedule?: string[];
   price?: string;
@@ -89,7 +92,117 @@ export const culturalEvents: Event[] = [
     price: 'Free entry for street events',
     howToGetThere: 'Walk from Playa de las Américas or take any bus to Los Cristianos bus station.',
     travelTips: ['Planning to stay late? Use the special night bus service', 'Wear a costume (disfraz) to fully enjoy the vibe', 'Watch the parade from the beach promenade'],
-    localSecret: 'The best atmosphere is in the small streets leading to the harbor on the night of the Burial of the Sardine.'
+    localSecret: 'The best atmosphere is in the small streets leading to the harbor on the night of the Burial of the Sardine.',
+    address: 'Plaza de la Pescadora, 38650 Los Cristianos, Santa Cruz de Tenerife',
+    website: 'https://www.arona.org/Carnaval'
+  },
+  {
+    id: 'jazz-festival-2026',
+    name: 'Canarias Jazz & Más 2026',
+    date: 'July 2026',
+    dateStart: '2026-07-10',
+    location: 'Costa Adeje',
+    type: 'Music',
+    description: 'International jazz stars perform in open-air settings across the south.',
+    detailedDescription: 'The Canarias Jazz & Más festival brings world-class jazz, blues, and soul artists to Tenerife. In the south, concerts are typically held in public squares or near the beach in Costa Adeje.',
+    officialLink: 'https://www.canariasjazz.com',
+    image: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0900,
+    lng: -16.7380,
+    highlights: ['International Artists', 'Beachfront Venues', 'Late Night Jam Sessions'],
+    price: 'Free / Ticketed variants',
+    address: 'Plaza de Salytien, 38660 Costa Adeje, Santa Cruz de Tenerife',
+    website: 'https://www.canariasjazz.com'
+  },
+  {
+    id: 'dia-canarias-2026',
+    name: 'Day of the Canary Islands',
+    date: 'May 30th, 2026',
+    dateStart: '2026-05-30',
+    location: 'Island-wide',
+    type: 'Traditional',
+    description: 'The biggest regional holiday celebrating Canarian identity and independence.',
+    detailedDescription: 'Expect traditional sports like Lucha Canaria (wrestling), folklore music in every square, and a massive feast of local products. It celebrates the first session of the Canary Islands Parliament.',
+    officialLink: 'http://www.gobiernodecanarias.org',
+    image: 'https://images.unsplash.com/photo-1464306208223-e0b4495a5553?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0988,
+    lng: -16.6806,
+    highlights: ['Lucha Canaria', 'Traditional Food', 'Folklore Concerts'],
+    price: 'Free',
+    address: 'Public Squares in Arona, Adeje, and San Miguel',
+    website: 'https://www.hellocanaryislands.com'
+  },
+  {
+    id: 'fiestas-carmen-2026',
+    name: 'Fiestas de la Virgen del Carmen',
+    date: 'July 16th, 2026',
+    dateStart: '2026-07-16',
+    location: 'Los Cristianos Harbor',
+    type: 'Traditional',
+    description: 'A marine procession honoring the patron saint of fishermen.',
+    detailedDescription: 'The statue of the Virgin is carried on a boat through the bay, followed by hundreds of decorated fishing vessels. It is a deeply moving and spectacular event for the local coastal communities.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1544485300-880c58e947c6?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0494,
+    lng: -16.7186,
+    highlights: ['Maritime Procession', 'Flower Offerings at Sea', 'Fireworks'],
+    price: 'Free',
+    address: 'Puerto de Los Cristianos, 38650 Los Cristianos',
+    website: 'https://www.arona.org'
+  },
+  {
+    id: 'arn-blue-2026',
+    name: 'ARN Blue & Green Festival',
+    date: 'August 2026',
+    dateStart: '2026-08-22',
+    location: 'Los Cristianos',
+    type: 'Music & Environment',
+    description: 'A festival combining electronic music with sustainability and marine conservation.',
+    detailedDescription: 'Focused on protecting the ocean, this festival features top DJs and bands alongside workshops on marine ecology and plastic reduction.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0519,
+    lng: -16.7214,
+    highlights: ['Plastic-Free Event', 'Marine Workshops', 'Silent Disco'],
+    price: 'Free',
+    address: 'Playa de las Vistas, 38650 Los Cristianos',
+    website: 'https://www.arona.org'
+  },
+  {
+    id: 'kitesurf-worlds-2026',
+    name: 'PWA World Windsurfing Cup 2026',
+    date: 'August 2026',
+    dateStart: '2026-08-05',
+    location: 'El Médano',
+    type: 'Sports',
+    description: 'The world\'s best windsurfers compete in the waves of El Médano.',
+    detailedDescription: 'Tenerife is a permanent fixture on the PWA world tour. El Médano provides the perfect conditions for wave and slalom disciplines, attracting elite athletes from across the globe.',
+    officialLink: 'https://www.pwaworldtour.com',
+    image: 'https://images.unsplash.com/photo-1502447463212-00d98418f4a1?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0460,
+    lng: -16.5350,
+    highlights: ['Vertical Jumps', 'World Champions', 'Surf Village'],
+    price: 'Free to watch',
+    address: 'Playa del Cabezo, 38612 El Médano',
+    website: 'https://www.pwaworldtour.com'
+  },
+  {
+    id: 'romeria-roque-2026',
+    name: 'Romería de San Roque',
+    date: 'August 16th, 2026',
+    dateStart: '2026-08-16',
+    location: 'Garachico (North but popular for South visitors)',
+    type: 'Traditional',
+    description: 'One of the most beautiful and traditional pilgrimages in the Canary Islands.',
+    detailedDescription: 'Though located in the northwest, many south locals travel for this event. It features decorated carts pulled by oxen, traditional music groups (parrandas), and the distribution of local food.',
+    officialLink: 'https://www.garachico.es',
+    image: 'https://images.unsplash.com/photo-1543783333-3d078e47b9ec?auto=format&fit=crop&q=80&w=800',
+    lat: 28.3736,
+    lng: -16.7617,
+    highlights: ['Ox-drawn Carts', 'Traditional Costumes', 'Sea Procession'],
+    price: 'Free',
+    address: 'Plaza de San Roque, 38450 Garachico',
+    website: 'https://www.garachico.es'
   },
   {
     id: 'sansofe-2026',
@@ -109,7 +222,27 @@ export const culturalEvents: Event[] = [
     price: 'Mostly Free',
     howToGetThere: 'TF-1 motorway exit for El Médano. Buses 470, 408 connect from South Airport.',
     travelTips: ['Bring a light sweater for the evening wind', 'Arrive early at the plaza for the best seats', 'Check the weekly program at the local tourist office'],
-    localSecret: 'The "Cinema on the Beach" often has local food stalls with amazing grilled sardines nearby.'
+    localSecret: 'The "Cinema on the Beach" often has local food stalls with amazing grilled sardines nearby.',
+    address: 'Plaza de El Médano, 38612 El Médano, Santa Cruz de Tenerife',
+    website: 'https://www.granadilladeabona.org'
+  },
+  {
+    id: 'romeria-cristiano-2026',
+    name: 'Romería de San Juanito',
+    date: 'June 24th, 2026',
+    dateStart: '2026-06-24',
+    location: 'Costa Silencio / Las Galletas',
+    type: 'Traditional',
+    description: 'Small but authentic coastal pilgrimage through the streets of Las Galletas.',
+    detailedDescription: 'A mid-summer tradition where locals celebrate San Juanito with a procession toward the sea. Expect traditional music and locally roasted fish on the pier.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1528605248644-14dd04cb21c7?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0084,
+    lng: -16.6578,
+    highlights: ['Coastal Procession', 'Pier-side BBQ', 'Traditional Gofio tasting'],
+    price: 'Free',
+    address: 'Calle Maria del Carmen García, 38631 Las Galletas',
+    website: 'https://www.arona.org'
   },
   {
     id: 'pascua-florida-2026',
@@ -129,7 +262,9 @@ export const culturalEvents: Event[] = [
     price: 'Free',
     howToGetThere: 'TF-1 to Adeje town exit. Bus 473 from Los Cristianos.',
     travelTips: ['The best time to visit is Thursday morning when flowers are freshest', 'Wear comfortable shoes for the hilly streets', 'Combine with a visit to the Barranco del Infierno nearby'],
-    localSecret: 'There is a small hidden garden in the town hall courtyard that has the most delicate sculpture every year.'
+    localSecret: 'There is a small hidden garden in the town hall courtyard that has the most delicate sculpture every year.',
+    address: 'Calle Grande, 1, 38670 Adeje, Santa Cruz de Tenerife',
+    website: 'https://www.adeje.es/pascuaflorida'
   },
   {
     id: 'san-juan-2026',
@@ -149,7 +284,377 @@ export const culturalEvents: Event[] = [
     price: 'Free',
     howToGetThere: 'Walk to any major beach like Playa de las Vistas or Playa Fañabé.',
     travelTips: ['Arrive before sunset to find a spot on the sand', 'Bring old wood for your own bonfire (obey local rules)', 'Keep your belongings safe while swimming'],
-    localSecret: 'The smaller beach of La Enramada in La Caleta has a more local feel than the big tourist beaches.'
+    localSecret: 'The smaller beach of La Enramada in La Caleta has a more local feel than the big tourist beaches.',
+    address: 'Various South Beaches (Los Cristianos, Costa Adeje, El Médano)',
+    website: 'https://www.webtenerife.com'
+  },
+  {
+    id: 'tenerife-walking-2026',
+    name: 'Tenerife Walking Festival 2026',
+    date: 'May 2026',
+    dateStart: '2026-05-19',
+    location: 'Puerto de la Cruz (Hub) but South Routes included',
+    type: 'Nature & Sports',
+    description: 'One of the most important hiking events in Europe, featuring routes across the island.',
+    detailedDescription: 'Hikers from all over Europe gather for this festival. While based in the north, it features major routes through the southern volcanic landscapes and the Teide National Park.',
+    officialLink: 'https://www.tenerifewalkingfestival.com',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&q=80&w=800',
+    lat: 28.1250,
+    lng: -16.7291,
+    highlights: ['Volcanic Trails', 'Night Stargazing Hikes', 'Local Gastronomy'],
+    price: 'Registration required (~€30/route)',
+    address: 'Central Meeting Point: Plaza de Europa, Puerto de la Cruz',
+    website: 'https://www.tenerifewalkingfestival.com'
+  },
+  {
+    id: 'arn-culture-2026',
+    name: 'Arona Culture & Art Festival',
+    date: 'September 2026',
+    dateStart: '2026-09-12',
+    location: 'Arona Casco',
+    type: 'Traditional & Art',
+    description: 'An explosion of local art, theater, and music in the historic street of Arona.',
+    detailedDescription: 'The historic centre of Arona becomes a stage for local artists. Sculptures, painting workshops, and street theater create a unique atmosphere in this colonial mountain town.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0988,
+    lng: -16.6806,
+    highlights: ['Street Theater', 'Live Art', 'Night Concerts'],
+    price: 'Free',
+    address: 'Calle El Calvario, 38640 Arona',
+    website: 'https://www.arona.org'
+  },
+  {
+    id: 'volleyball-masters-2026',
+    name: 'Beach Volleyball Masters 2026',
+    date: 'October 2026',
+    dateStart: '2026-10-04',
+    location: 'Playa de las Vistas',
+    type: 'Sports',
+    description: 'International beach volleyball teams compete on the golden sands of Los Cristianos.',
+    detailedDescription: 'Los Cristianos hosts elite athletes for this high-energy tournament. The stadium is built directly on the sand, offering a proximity to the action that is rare in professional sports.',
+    officialLink: 'https://www.tenerifeplayas.com',
+    image: 'https://images.unsplash.com/photo-1547347697-393223067d71?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0519,
+    lng: -16.7214,
+    highlights: ['Pro Matches', 'Beach Party', 'Youth Clinic'],
+    price: 'Free for spectators',
+    address: 'Playa de las Vistas, 38650 Los Cristianos',
+    website: 'https://www.arona.org'
+  },
+  {
+    id: 'fiestas-cristiano-2026',
+    name: 'Fiestas del Santísimo Cristo de la Salud',
+    date: 'October 2026',
+    dateStart: '2026-10-18',
+    location: 'Arona Town',
+    type: 'Traditional',
+    description: 'The main patron saint festivities of Arona with major religious and festive events.',
+    detailedDescription: 'One of the most important religious festivals in the south. It combines solemn processions with the \'Gran Baile de Magos\' where thousands dress in traditional costume to eat and dance until dawn.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0988,
+    lng: -16.6806,
+    highlights: ['Baile de Magos', 'Procession of the Christ', 'Major Pop Concerts'],
+    price: 'Free',
+    address: 'Plaza del Cristo, 38640 Arona',
+    website: 'https://www.arona.org'
+  },
+  {
+    id: 'fiestas-san-sebastian-2026',
+    name: 'Fiestas de San Sebastián',
+    date: 'January 20th, 2026',
+    dateStart: '2026-01-20',
+    location: 'La Caleta / Adeje',
+    type: 'Traditional',
+    description: 'One of the most authentic southern traditions involving a sea-bath for horses.',
+    detailedDescription: 'Thousands gather at the beach of La Enramada. The highlight is when horse riders ride their animals into the sea to be blessed. It\'s a stunning spectacle combining agrarian roots with the Atlantic.',
+    officialLink: 'https://www.adeje.es',
+    image: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=800',
+    lat: 28.1028,
+    lng: -16.7533,
+    highlights: ['Horse Sea Bath', 'Traditional Music', 'Local Artisan Market'],
+    price: 'Free',
+    address: 'Playa de la Enramada, 38679 La Caleta',
+    website: 'https://www.adeje.es'
+  },
+  {
+    id: 'musica-al-mar-2026',
+    name: 'Música al Mar',
+    date: 'August 2026',
+    dateStart: '2026-08-15',
+    location: 'Las Galletas',
+    type: 'Music',
+    description: 'Live concerts on a stage setup on the pier, with the Atlantic as a backdrop.',
+    detailedDescription: 'A series of summer concerts featuring local and national artists. The unique setting on the Las Galletas pier provides an incredible acoustic and visual experience.',
+    officialLink: 'https://www.arona.org',
+    image: 'https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&q=80&w=800',
+    lat: 28.0084,
+    lng: -16.6578,
+    highlights: ['Oceanfront Stage', 'Sunset Concerts', 'Local Food Stalls'],
+    price: 'Free',
+    address: 'Muelle de Las Galletas, 38631 Las Galletas',
+    website: 'https://www.arona.org'
+  }
+];
+
+export interface Restaurant {
+  name: string;
+  location: string;
+  type: string;
+  description: string;
+  detailedDescription: string;
+  image: string;
+  highlights: string[];
+  specialty: string;
+  priceLevel: '$' | '$$' | '$$$';
+  rating: number;
+  address?: string;
+  website?: string;
+  lat: number;
+  lng: number;
+}
+
+export const localEats: Restaurant[] = [
+  {
+    name: "Cofradía de Tajao",
+    location: "San Miguel de Tajao",
+    type: "Seafood Collective",
+    description: "The ultimate local seafood experience. No menu—just a counter full of today's catch.",
+    detailedDescription: "In Tajao, the fishing cooperative (Cofradía) is the heart of the village. You walk up to the counter, point at the fish or shellfish brought in that morning, and tell them how you want it (usually grilled or fried). It's loud, hectic, and incredibly authentic.",
+    image: "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Freshest catch", "Weight-based pricing", "Pick-your-own-fish"],
+    specialty: "Vieja (Parrotfish) with Mojo",
+    priceLevel: "$$",
+    rating: 4.7,
+    address: "Calle Callao de la Higa, 1, 38588 San Miguel de Tajao",
+    website: "https://www.facebook.com/cofradiatajao/",
+    lat: 28.1102,
+    lng: -16.4718
+  },
+  {
+    name: "Guachinche El Lulú",
+    location: "Arona Casco",
+    type: "Traditional Guachinche",
+    description: "A proper hilltop haunt serving house wine and hearty Canarian soul food.",
+    detailedDescription: "Located away from the coast in the hills of Arona, El Lulú is where families gather on Sundays. It specializes in slow-cooked meats and traditional stews, accompanied by their own locally produced wine.",
+    image: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Homemade wine", "Family atmosphere", "Mountain views"],
+    specialty: "Carne Fiesta (Marinated Pork)",
+    priceLevel: "$",
+    rating: 4.5,
+    address: "Calle el Drago, 20, 38640 Arona",
+    website: "https://guachincheel-lulu.negocio.site/",
+    lat: 28.0988,
+    lng: -16.6806
+  },
+  {
+    name: "El Cine",
+    location: "Los Cristianos",
+    type: "Hidden Gem",
+    description: "Located in a narrow alley, this place has kept the same simple menu for decades.",
+    detailedDescription: "Despite being in a tourist hub, El Cine remains a bastion of simplicity. The menu is printed on the wall: hake, octopus, and potatoes. No 'fancy' decor, just some of the best fried fish in the south.",
+    image: "https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Alleyway seating", "Simple menu", "Best fried octopus"],
+    specialty: "Chocos Asados (Grilled Cuttlefish)",
+    priceLevel: "$",
+    rating: 4.4,
+    address: "Calle Juan Reveron Sierra, 38650 Los Cristianos",
+    website: "https://www.restauranteelcine.com",
+    lat: 28.0514,
+    lng: -16.7167
+  },
+  {
+    name: "Otelo",
+    location: "Adeje (Barranco del Infierno)",
+    type: "Iconic Institution",
+    description: "The birthplace of the famous 'Pollo de Adeje'—heavenly garlic chicken.",
+    detailedDescription: "Perched at the entrance of the Inferno Ravine, Otelo is legendary for its garlic chicken. It's crispy, spicy, and perfectly seasoned. Every local knows this is the place for a post-hike feast.",
+    image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Cliffside terrace", "Secret garlic sauce", "Historic location"],
+    specialty: "Pollo con Ajo (Adeje Style Chicken)",
+    priceLevel: "$$",
+    rating: 4.6,
+    address: "Calle Molinos, 44, 38670 Adeje",
+    website: "http://restauranteotelo.com",
+    lat: 28.1250,
+    lng: -16.7291
+  },
+  {
+    name: "Mesón Era Las Mozas",
+    location: "Valle de San Lorenzo",
+    type: "Steakhouse / Mesón",
+    description: "Gigantic portions of grilled meats in a rustic, echoing warehouse vibe.",
+    detailedDescription: "This is where you go when you're hungry. Very hungry. It's an enormous space filled with long tables and the smell of charcoal. The steaks are massive, and the 'papas arrugadas' are authentic.",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Huge portions", "Charcoal grill", "Noisy and fun"],
+    specialty: "Chuletón (Large T-bone Steak)",
+    priceLevel: "$$",
+    rating: 4.5,
+    address: "Carretera General TF-28, 77, 38627 Valle de San Lorenzo",
+    website: "https://mesoneralasmozas.com",
+    lat: 28.0833,
+    lng: -16.6500
+  },
+  {
+    name: "Guachinche La Huerta de Ana y Eva",
+    location: "La Matanza (South Edition vibe)",
+    type: "Authentic Guachinche",
+    description: "Traditional food in a garden atmosphere. Secretive, rustic, and incredibly cheap.",
+    detailedDescription: "While many guachinches are in the north, some authentic branches operate in the south highlands. Ana y Eva's place is famous for its garden setting and the quality of its wine. It's a true community spot.",
+    image: "https://images.unsplash.com/photo-1574966739982-2b783cb26ad6?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Garden seating", "Authentic wine", "Local secret"],
+    specialty: "Queso Asado con Mojos",
+    priceLevel: "$",
+    rating: 4.8,
+    address: "Calle Real, 102, 38370 La Matanza de Acentejo",
+    website: "https://guachinchelahuertadeanayeva.com",
+    lat: 28.4411,
+    lng: -16.4444
+  },
+  {
+    name: "Tasca La Parranda",
+    location: "Guía de Isora",
+    type: "Village Tasca",
+    description: "A cozy place where time slows down. Known for goat meat and local wines.",
+    detailedDescription: "Guía de Isora is a steep village full of character. La Parranda is a family-run tasca that serves the community with recipes that haven't changed in fifty years.",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Local wine selection", "Old-world charm", "Mountain town"],
+    specialty: "Carne de Cabra (Goat Meat)",
+    priceLevel: "$$",
+    rating: 4.7,
+    address: "Calle de Abajo, 7, 38680 Guía de Isora",
+    website: "https://tascalaparranda.es",
+    lat: 28.2106,
+    lng: -16.7797
+  },
+  {
+    name: "Cofradía de Pescadores",
+    location: "Los Galletas",
+    type: "Harbor Seafood",
+    description: "Watch the boats bring in your dinner right from your table at the harbor.",
+    detailedDescription: "The fishermen's guild of Las Galletas offers a no-frills seafood experience right on the pier. It's simple, fresh, and focuses entirely on the quality of the ingredients.",
+    image: "https://images.unsplash.com/photo-1476224483472-38666579058b?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Pier-side dining", "Daily specials", "Sea breeze"],
+    specialty: "Pescado del Día a la Espalda",
+    priceLevel: "$$",
+    rating: 4.5,
+    address: "Paseo Maritimo, S/N, 38631 Las Galletas",
+    website: "https://cofradialasgalletas.com",
+    lat: 28.0084,
+    lng: -16.6578
+  },
+  {
+    name: "Tasca El Granero",
+    location: "Vilaflor",
+    type: "Highland Tasca",
+    description: "Comfort food in the highest village of Spain. Perfect for cold evenings.",
+    detailedDescription: "As the temperatures drop in Vilaflor, El Granero serves warm, comforting stews and slow-roasted meats. It feels like eating in a wealthy farmer's living room.",
+    image: "https://images.unsplash.com/photo-1547928576-a4a33237ce35?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Fireplace vibe", "Mountain wine", "Cozy decor"],
+    specialty: "Conejo en Salmorejo (Rabbit in sauce)",
+    priceLevel: "$$",
+    rating: 4.6,
+    address: "Calle Castaños, 4, 38615 Vilaflor",
+    website: "http://tascaelgranero.com",
+    lat: 28.1594,
+    lng: -16.6375
+  },
+  {
+    name: "Restaurante El Cordero",
+    location: "El Monte / Guaza",
+    type: "Unique Experience",
+    description: "Dine inside a lush banana plantation. A green oasis for meat lovers.",
+    detailedDescription: "While it has grown popular, El Cordero remains a favorite for locals celebrating special occasions. You eat surrounded by banana palms under a massive greenhouse structure.",
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Banana plantation setting", "Interactive grill", "Great for groups"],
+    specialty: "Cordero Lechal (Roasted Lamb)",
+    priceLevel: "$$$",
+    rating: 4.3,
+    address: "Carretera General a Galletas, 38639 El Monte",
+    website: "https://restauranteelcordero.com",
+    lat: 28.0333,
+    lng: -16.6833
+  },
+  {
+    name: "Casa de la Viuda",
+    location: "San Miguel de Abona",
+    type: "Historical Eatery",
+    description: "Traditional Canarian recipes passed down through generations in an old manor.",
+    detailedDescription: "San Miguel is full of history, and this restaurant occupies a beautifully preserved old house. It's the place to try 'Escaldón de Gofio' and other dishes that tourists usually never find.",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Historic manor", "Gofio specialties", "Authentic stews"],
+    specialty: "Escaldón de Gofio",
+    priceLevel: "$$",
+    rating: 4.6,
+    address: "Calle la Iglesia, 12, 38620 San Miguel",
+    website: "https://casadelaviuda.es",
+    lat: 28.0983,
+    lng: -16.6167
+  },
+  {
+    name: "Bar Los Abrigos",
+    location: "Los Abrigos",
+    type: "Fishermen's Tavern",
+    description: "Old-school harbor bar where the locals have their coffee and morning 'puntitas'.",
+    detailedDescription: "Before Los Abrigos became a seafood destination, there were bars like this. It's basic, loud, and the coffee is strong. Ideal for small plates (tapas) while watching the world go by.",
+    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Harbor front", "Cheap tapas", "Morning vibe"],
+    specialty: "Puntitas de Calamar (Fried Squid Increments)",
+    priceLevel: "$",
+    rating: 4.2,
+    address: "Muelle de Los Abrigos, 38618 Los Abrigos",
+    website: "https://webtenerife.com/losabrigos",
+    lat: 28.0283,
+    lng: -16.5917
+  },
+  {
+    name: "Bar Restaurante Salitre",
+    location: "La Caleta",
+    type: "Seafood & Tradition",
+    description: "Elegant but deeply rooted in local fishing history. Best terrace for waves and sunset.",
+    detailedDescription: "La Caleta was once just a tiny fishing outpost. Salitre captures that history with sophisticated seafood dishes that still respect traditional methods. The view of the sunset here is considered one of the best in Tenerife South.",
+    image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Sunset views", "Seafood rice", "Calm village vibe"],
+    specialty: "Arroz Caldoso con Bogavante",
+    priceLevel: "$$$",
+    rating: 4.6,
+    address: "Calle el Muelle, 18, 38679 La Caleta",
+    website: "https://restaurantesalitre.es",
+    lat: 28.0988,
+    lng: -16.7533
+  },
+  {
+    name: "Guachinche El Primero",
+    location: "Santa Cruz highlands (South route)",
+    type: "Authentic Guachinche",
+    description: "The definition of no-frills. Paper tablecloths, huge wine jugs, and massive meat platters.",
+    detailedDescription: "Often found by following the 'Guachinche' road signs, El Primero is where the real work happens. You eat what they have that day, usually grilled meat, and drink the local vintage. It's the purest form of Canarian dining.",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Ultra-local", "Very cheap", "Huge portions"],
+    specialty: "Costillas con Papas y Piña",
+    priceLevel: "$",
+    rating: 4.7,
+    address: "Calle San Jose, 10, Santa Cruz de Tenerife",
+    website: "https://guachincheelprimero.com",
+    lat: 28.3833,
+    lng: -16.3667
+  },
+  {
+    name: "Bar Los Pinchitos",
+    location: "El Médano",
+    type: "Tapas & Beer",
+    description: "The heart of the local surf community. Simple, noisy, and full of life.",
+    detailedDescription: "Away from the main beach plaza, Los Pinchitos is where the kite surfers and locals hang out. It's famous for its small plates of octopus and local goat cheese.",
+    image: "https://images.unsplash.com/photo-1515003305869-8ba991c80bfa?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Surf vibe", "Cheap beer", "Best local tapas"],
+    specialty: "Queso Herreño Frito",
+    priceLevel: "$",
+    rating: 4.4,
+    address: "Avenida de Magallanes, 6, 38612 El Médano",
+    website: "https://los-pinchitos.com",
+    lat: 28.0450,
+    lng: -16.5367
   }
 ];
 
@@ -169,7 +674,9 @@ export const destinationsList = [
     safetyTips: "Generally very safe. Keep an eye on belongings in crowded market areas.",
     image: "https://images.unsplash.com/photo-1616851475769-d47e4eb1e6df?auto=format&fit=crop&q=80&w=800",
     lat: 28.0847,
-    lng: -16.7331
+    lng: -16.7331,
+    address: "Costa Adeje, 38660 Adeje, Santa Cruz de Tenerife",
+    website: "https://www.visitcostaadeje.com"
   },
   {
     name: "Playa de las Américas",
@@ -186,7 +693,9 @@ export const destinationsList = [
     safetyTips: "Stay with friends at night. Be cautious with street promoters and unauthorized street vendors.",
     image: "https://images.unsplash.com/photo-1544485300-880c58e947c6?auto=format&fit=crop&q=80&w=800",
     lat: 28.0583,
-    lng: -16.7320
+    lng: -16.7320,
+    address: "Playa de las Américas, 38660 Arona, Santa Cruz de Tenerife",
+    website: "https://www.arona.org"
   },
   {
     name: "Los Cristianos",
@@ -203,7 +712,9 @@ export const destinationsList = [
     safetyTips: "Take care of wallets in the Sunday market. The port area can be very busy.",
     image: "https://images.unsplash.com/photo-1632766324376-7ebafad11666?auto=format&fit=crop&q=80&w=800",
     lat: 28.0526,
-    lng: -16.7167
+    lng: -16.7167,
+    address: "Los Cristianos, 38650 Arona, Santa Cruz de Tenerife",
+    website: "https://www.arona.org"
   },
   {
     name: "El Médano",
@@ -220,7 +731,9 @@ export const destinationsList = [
     safetyTips: "The wind can be strong; watch your hats! Be careful when hiking the mountain in strong gusts.",
     image: "https://images.unsplash.com/photo-1582236589327-0466be5ee821?auto=format&fit=crop&q=80&w=800",
     lat: 28.0450,
-    lng: -16.5367
+    lng: -16.5367,
+    address: "Avenida de Magallanes, 38612 El Médano",
+    website: "https://www.granadilladeabona.org"
   }
 ];
 
@@ -241,6 +754,8 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
     lat: 28.0906,
     lng: -16.7441,
+    address: "Calle Javier de la Rosa, 38679 Costa Adeje",
+    website: "https://www.visitcostaadeje.com"
   },
   {
     name: "Playa de las Vistas",
@@ -258,6 +773,8 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1520113412548-5256e5df4698?auto=format&fit=crop&q=80&w=800",
     lat: 28.0519,
     lng: -16.7214,
+    address: "Avenida de Estocolmo, s/n, 38650 Los Cristianos",
+    website: "https://www.arona.org"
   },
   {
     name: "Playa de la Tejita",
@@ -275,6 +792,8 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1499596395995-17d4a20bde15?auto=format&fit=crop&q=80&w=800",
     lat: 28.0315,
     lng: -16.5522,
+    address: "Carretera El Médano-Los Abrigos, 38612 El Médano",
+    website: "https://www.granadilladeabona.org"
   },
   {
     name: "Playa Fañabé",
@@ -292,6 +811,8 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0831,
     lng: -16.7371,
+    address: "Avenida de España, 38660 Costa Adeje",
+    website: "https://www.visitcostaadeje.com"
   }
 ];
 
@@ -311,6 +832,8 @@ export const activities = [
     image: "https://images.unsplash.com/photo-1506543730435-e2c1d4553a84?auto=format&fit=crop&q=80&w=800",
     lat: 28.0772,
     lng: -16.7378,
+    address: "Puerto Colón, Pantalán 4, 38660 Costa Adeje",
+    website: "https://www.puertocolon.com"
   },
   {
     name: "Siam Park",
@@ -327,6 +850,8 @@ export const activities = [
     image: "https://images.unsplash.com/photo-1582650050854-e0eb363806f3?auto=format&fit=crop&q=80&w=800",
     lat: 28.0725,
     lng: -16.7275,
+    address: "Avenida Siam, s/n, 38660 Costa Adeje",
+    website: "https://www.siampark.net"
   },
   {
     name: "Teide National Park",
@@ -343,6 +868,8 @@ export const activities = [
     image: "https://images.unsplash.com/photo-1541804246062-8e3ad5d3d45d?auto=format&fit=crop&q=80&w=800",
     lat: 28.2723,
     lng: -16.6425,
+    address: "Parque Nacional del Teide, 38380, Santa Cruz de Tenerife",
+    website: "https://www.volcanoteide.com"
   },
   {
     name: "Surfing in Las Américas",
@@ -359,6 +886,8 @@ export const activities = [
     image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&q=80&w=800",
     lat: 28.0581,
     lng: -16.7335,
+    address: "Paseo Maritimo, Playa de la Izquierda, 38660 Playa de las Américas",
+    website: "https://www.tenerifesurfcamp.com"
   }
 ];
 

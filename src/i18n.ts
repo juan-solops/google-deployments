@@ -49,9 +49,13 @@ export interface Translations {
   whatToBring: string;
   suitability: string;
   nearbyRecommendations: string;
+  eatLikeALocal: string;
+  specialty: string;
+  priceLevel: string;
   safetyTips: string;
   officialSite: string;
   currentTime: string;
+  rating: string;
 }
 
 export const languages: { code: Language; name: string }[] = [
@@ -119,6 +123,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Safety & Etiquette',
     officialSite: 'Official Website',
     currentTime: 'Current Time',
+    eatLikeALocal: 'Eat Like a Local',
+    specialty: 'House Specialty',
+    priceLevel: 'Price',
+    rating: 'Rating',
   },
   ES: {
     overview: 'Resumen',
@@ -172,6 +180,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Seguridad y Etiqueta',
     officialSite: 'Sitio Web Oficial',
     currentTime: 'Hora Local',
+    eatLikeALocal: 'Comer como un Local',
+    specialty: 'Especialidad de la Casa',
+    priceLevel: 'Precio',
+    rating: 'Valoración',
   },
   FR: {
     overview: 'Aperçu',
@@ -225,6 +237,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Sécurité et Étiquette',
     officialSite: 'Site Officiel',
     currentTime: 'Heure Actuelle',
+    eatLikeALocal: 'Manger comme un Local',
+    specialty: 'Spécialité Maison',
+    priceLevel: 'Prix',
+    rating: 'Note',
   },
   DE: {
     overview: 'Übersicht',
@@ -278,6 +294,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Sicherheit & Etikette',
     officialSite: 'Offizielle Webseite',
     currentTime: 'Aktuelle Zeit',
+    eatLikeALocal: 'Essen wie ein Einheimischer',
+    specialty: 'Haus-Spezialität',
+    priceLevel: 'Preis',
+    rating: 'Bewertung',
   },
   NL: {
     overview: 'Overzicht',
@@ -331,6 +351,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Veiligheid & Etiquette',
     officialSite: 'Officiële Website',
     currentTime: 'Huidige Tijd',
+    eatLikeALocal: 'Eet als een Lokale Bewoner',
+    specialty: 'Huis Specialiteit',
+    priceLevel: 'Prijs',
+    rating: 'Beoordeling',
   },
   IT: {
     overview: 'Panoramica',
@@ -384,6 +408,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Sicurezza e Galateo',
     officialSite: 'Sito Ufficiale',
     currentTime: 'Ora Locale',
+    eatLikeALocal: 'Mangia come un Locale',
+    specialty: 'Specialità della Casa',
+    priceLevel: 'Prezzo',
+    rating: 'Valutazione',
   },
   PT: {
     overview: 'Visão Geral',
@@ -437,6 +465,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Segurança e Etiqueta',
     officialSite: 'Site Oficial',
     currentTime: 'Hora Atual',
+    eatLikeALocal: 'Comer como um Local',
+    specialty: 'Especialidade da Casa',
+    priceLevel: 'Preço',
+    rating: 'Avaliação',
   },
   PL: {
     overview: 'Przegląd',
@@ -490,6 +522,10 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Bezpieczeństwo i Etykieta',
     officialSite: 'Oficjalna Strona',
     currentTime: 'Aktualny Czas',
+    eatLikeALocal: 'Jedz jak lokalny',
+    specialty: 'Specjalność Domu',
+    priceLevel: 'Cena',
+    rating: 'Ocena',
   },
   UK: {
     overview: 'Огляд',
@@ -543,5 +579,9 @@ export const i18n: Record<Language, Translations> = {
     safetyTips: 'Безпека та Етикет',
     officialSite: 'Офіційний сайт',
     currentTime: 'Поточний Час',
+    eatLikeALocal: 'Їжте як місцеві',
+    specialty: 'Фірмова страва',
+    priceLevel: 'Ціна',
+    rating: 'Рейтинг',
   },
 };
