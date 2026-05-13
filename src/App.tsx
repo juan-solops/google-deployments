@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { categories, destinationsList, beaches, activities, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
-import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star } from 'lucide-react';
+import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin, useApiLoadingStatus, APILoadingStatus } from '@vis.gl/react-google-maps';
 import { i18n, languages, Language } from './i18n';
 import { GoogleGenAI } from '@google/genai';
@@ -37,13 +37,37 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [weather, setWeather] = useState<{temp: number, code: number} | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    
+    // Fetch weather for TFS (Tenerife South Airport)
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=28.0445&longitude=-16.5144&current_weather=true')
+      .then(res => res.json())
+      .then(data => {
+        if (data.current_weather) {
+          setWeather({
+            temp: Math.round(data.current_weather.temperature),
+            code: data.current_weather.weathercode
+          });
+        }
+      })
+      .catch(err => console.error("Weather fetch failed", err));
+
     return () => clearInterval(timer);
   }, []);
 
   const t = i18n[lang];
+
+  const getWeatherIcon = (code: number) => {
+    if (code === 0) return <Sun size={14} className="text-[#F27D26]" />;
+    if (code >= 1 && code <= 3) return <CloudSun size={14} className="text-[#F27D26]" />;
+    if (code >= 51 && code <= 67) return <CloudRain size={14} className="text-[#F27D26]" />;
+    if (code >= 80 && code <= 82) return <CloudRain size={14} className="text-[#F27D26]" />;
+    if (code >= 95) return <CloudLightning size={14} className="text-[#F27D26]" />;
+    return <Cloud size={14} className="text-[#F27D26]" />;
+  };
 
   // Dynamic SEO Data
   const seoData = {
@@ -117,79 +141,36 @@ export default function App() {
         {/* Background Decorative Element */}
         <div className="fixed top-20 right-[-100px] w-[600px] h-[600px] bg-gradient-to-br from-[#F27D26]/10 to-transparent rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-        {/* Hero Section */}
-        <header className="relative w-full flex flex-col justify-end px-8 pt-24 pb-12 z-10 max-w-6xl mx-auto">
-          <div className="flex justify-between items-end border-b border-white/10 pb-8 mb-8">
-             <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife // South</div>
+        {/* Top bar / Logo area */}
+        <div className="relative w-full px-8 py-8 md:py-12 z-20 max-w-6xl mx-auto flex justify-between items-center border-b border-white/5">
+             <div className="flex flex-col translate-y-2">
+               <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife</div>
+               <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-white/40">South Guide</div>
+             </div>
              
-             <div className="flex items-center gap-6">
-                <div className="relative group mr-4 hidden sm:block">
-                  <Menu size={14} className="text-white/20 absolute left-3 top-1/2 -translate-y-1/2 rotate-90" />
-                  <input
-                    type="text"
-                    placeholder={lang === 'EN' ? "SEARCH..." : "BUSCAR..."}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-white/5 border border-white/10 py-1.5 pl-9 pr-8 w-24 focus:w-40 transition-all duration-500 text-[9px] uppercase tracking-[0.2em] text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 rounded-sm"
-                  />
-                  {searchQuery && (
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
-                    >
-                      <X size={10} />
-                    </button>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <button 
-                    onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                    className="flex items-center gap-2 text-[10px] tracking-widest text-white/60 hover:text-white transition-colors"
-                  >
-                    <Globe size={14} />
-                    <span>{lang}</span>
-                    <ChevronDown size={10} />
-                  </button>
-                  
-                  <AnimatePresence>
-                    {isLangMenuOpen && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute right-0 mt-2 w-48 bg-[#111] border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
-                      >
-                        <div className="grid grid-cols-1 gap-1">
-                          {languages.map((l) => (
-                            <button
-                              key={l.code}
-                              onClick={() => {
-                                setLang(l.code);
-                                setIsLangMenuOpen(false);
-                              }}
-                              className={`flex items-center justify-between px-3 py-2 text-[9px] uppercase tracking-widest hover:bg-white/5 transition-colors ${
-                                lang === l.code ? 'text-[#F27D26]' : 'text-white/60'
-                              }`}
-                            >
-                              {l.name}
-                              {lang === l.code && <Check size={10} />}
-                            </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+             <div className="flex items-center gap-4 md:gap-8">
+                {weather && (
+                  <div className="flex items-center gap-3 group px-4 py-1">
+                    <div className="flex flex-col items-end">
+                      <span className="text-xs md:text-[13px] font-bold text-white leading-none tracking-tight">{weather.temp}°C</span>
+                      <span className="text-[7px] tracking-[0.2em] text-[#F27D26] uppercase font-black mt-1 hidden sm:block">Airport TFS</span>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-[#F27D26]/10 flex items-center justify-center border border-[#F27D26]/20">
+                      {getWeatherIcon(weather.code)}
+                    </div>
+                  </div>
+                )}
                 <div className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center text-[10px] tracking-widest text-white/50">TFS</div>
              </div>
-          </div>
+        </div>
 
+        {/* Hero Title Area - Scrolls away */}
+        <header className="relative w-full px-8 pt-12 pb-16 z-10 max-w-6xl mx-auto overflow-hidden">
           <div className="relative leading-none mb-8">
-            <h1 className="text-[100px] md:text-[180px] lg:text-[240px] font-black uppercase tracking-tighter leading-[0.8] mix-blend-lighten text-white">
+            <h1 className="text-[70px] sm:text-[120px] md:text-[180px] lg:text-[240px] font-black uppercase tracking-tighter leading-[0.8] mix-blend-lighten text-white">
               TENER<br/>IFE
             </h1>
-            <span className="absolute top-1/2 left-[40%] md:left-[580px] -translate-y-1/2 text-[80px] md:text-[140px] lg:text-[180px] font-thin italic text-[#F27D26] opacity-90 leading-none">
+            <span className="absolute top-1/2 left-[30%] sm:left-[40%] md:left-[50%] lg:left-[580px] -translate-y-1/2 text-[50px] sm:text-[100px] md:text-[140px] lg:text-[180px] font-thin italic text-[#F27D26] opacity-90 leading-none pointer-events-none">
               {t.south}
             </span>
           </div>
@@ -199,46 +180,111 @@ export default function App() {
           </p>
         </header>
 
-        {/* Navigation */}
-        <div className="sticky top-0 z-30 bg-[#0A0A0A]/90 backdrop-blur-md border-y border-white/10">
-          <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
+        {/* Unified Navigation Bar - Sticky */}
+        <div className="sticky top-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-xl border-y border-white/10">
+          <div className="max-w-6xl mx-auto px-8 flex justify-between items-center h-16">
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex overflow-x-auto hide-scrollbar py-4 flex-1">
-              <div className="flex gap-4 lg:gap-8 min-w-max pr-8">
-                {categories.map((category) => {
-                  const Icon = category.icon;
-                  const isActive = activeTab === category.id;
-                  const label = t[category.id as keyof typeof t] || category.label;
-                  
-                  return (
-                    <button
-                      key={category.id}
-                      onClick={() => handleTabChange(category.id)}
-                      className={`flex items-center gap-2 text-[10px] tracking-widest font-medium uppercase transition-all whitespace-nowrap ${
-                        isActive 
-                          ? 'text-white border-b-2 border-[#F27D26] pb-1' 
-                          : 'text-white/50 hover:text-white pb-1'
-                      }`}
-                    >
-                      <Icon size={14} className={isActive ? 'text-[#F27D26]' : 'text-white/30'} />
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-            </nav>
-
-            {/* Mobile Navigation Header */}
-            <div className="flex md:hidden items-center justify-between w-full h-full py-4">
-              <span className="text-[10px] tracking-[0.2em] font-bold uppercase text-white/70">
-                {t[activeTab as keyof typeof t] || categories.find(c => c.id === activeTab)?.label}
-              </span>
-              <button 
+            <div className="flex items-center gap-4 h-full md:flex-1">
+               {/* Mobile Menu Trigger */}
+               <button 
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white active:scale-95 transition-all"
-              >
-                <Menu size={20} />
-              </button>
+                className="md:hidden w-10 h-10 -ml-2 flex items-center justify-center text-white/70 hover:text-white active:scale-90 transition-all"
+               >
+                 <Menu size={24} />
+               </button>
+
+               <nav className="hidden md:flex gap-6 lg:gap-8 items-center h-full">
+                 {categories.map((category) => {
+                   const Icon = category.icon;
+                   const isActive = activeTab === category.id;
+                   const label = t[category.id as keyof typeof t] || category.label;
+                   
+                   return (
+                     <button
+                       key={category.id}
+                       onClick={() => handleTabChange(category.id)}
+                       className={`h-full flex items-center gap-2 text-[10px] tracking-widest font-medium uppercase transition-all whitespace-nowrap border-b-2 ${
+                         isActive 
+                           ? 'text-white border-b-[#F27D26]' 
+                           : 'text-white/50 hover:text-white border-b-transparent'
+                       }`}
+                     >
+                       <Icon size={14} className={isActive ? 'text-[#F27D26]' : 'text-white/30'} />
+                       {label}
+                     </button>
+                   );
+                 })}
+               </nav>
+            </div>
+
+            {/* Desktop Utilities */}
+            <div className="hidden md:flex items-center gap-6">
+               <div className="relative">
+                 <button 
+                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                   className="flex items-center gap-2 text-[10px] tracking-widest text-white/60 hover:text-white transition-colors"
+                 >
+                   <Globe size={14} />
+                   <span>{lang}</span>
+                   <ChevronDown size={10} />
+                 </button>
+                 
+                 <AnimatePresence>
+                   {isLangMenuOpen && (
+                     <motion.div 
+                       initial={{ opacity: 0, y: 10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       exit={{ opacity: 0, y: 10 }}
+                       className="absolute right-0 mt-2 w-48 bg-[#111] border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
+                     >
+                       <div className="grid grid-cols-1 gap-1">
+                         {languages.map((l) => (
+                           <button
+                             key={l.code}
+                             onClick={() => {
+                               setLang(l.code);
+                               setIsLangMenuOpen(false);
+                             }}
+                             className={`flex items-center justify-between px-3 py-2 text-[9px] uppercase tracking-widest hover:bg-white/5 transition-colors ${
+                               lang === l.code ? 'text-[#F27D26]' : 'text-white/60'
+                             }`}
+                           >
+                             {l.name}
+                             {lang === l.code && <Check size={10} />}
+                           </button>
+                         ))}
+                       </div>
+                     </motion.div>
+                   )}
+                 </AnimatePresence>
+               </div>
+
+               <div className="relative">
+                  <Menu size={14} className="text-white/20 absolute left-3 top-1/2 -translate-y-1/2 rotate-90" />
+                  <input
+                    type="text"
+                    placeholder={lang === 'EN' ? "SEARCH..." : "BUSCAR..."}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="bg-white/5 border border-white/10 py-2 pl-9 pr-10 w-32 focus:w-48 transition-all duration-500 text-[9px] uppercase tracking-[0.2em] text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 rounded-sm"
+                  />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+                    >
+                      <X size={10} />
+                    </button>
+                  )}
+               </div>
+            </div>
+
+            {/* Mobile Status - Visible only when sticky */}
+            <div className="md:hidden flex flex-col items-end">
+               <span className="text-[11px] tracking-[0.2em] font-black uppercase text-[#F27D26] leading-none">
+                 {t[activeTab as keyof typeof t]}
+               </span>
+               <span className="text-[7px] tracking-widest text-white/30 uppercase mt-1">Section</span>
             </div>
           </div>
         </div>
@@ -247,22 +293,47 @@ export default function App() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 md:hidden bg-[#0A0A0A] flex flex-col p-8"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+              className="fixed inset-0 z-[60] md:hidden bg-[#0A0A0A] flex flex-col pt-12"
             >
-              <div className="flex justify-between items-center mb-16">
-                <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Menu</div>
+              <div className="flex justify-between items-center px-8 mb-12">
+                <div className="flex flex-col">
+                  <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife</div>
+                  <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-white/40">South Guide</div>
+                </div>
                 <button 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center text-white"
+                  className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white active:scale-95 transition-all"
                 >
-                  <X size={18} />
+                  <X size={24} />
                 </button>
               </div>
 
-              <nav className="flex flex-col gap-8">
+              <div className="px-8 mb-12">
+                 <div className="relative">
+                    <Menu size={18} className="text-white/20 absolute left-4 top-1/2 -translate-y-1/2 rotate-90" />
+                    <input
+                      type="text"
+                      placeholder={lang === 'EN' ? "SEARCH..." : "BUSCAR..."}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 py-4 pl-12 pr-12 text-sm uppercase tracking-[0.2em] text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 rounded-sm"
+                    />
+                    {searchQuery && (
+                      <button 
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+                      >
+                        <X size={18} />
+                      </button>
+                    )}
+                 </div>
+              </div>
+
+              <nav className="flex flex-col px-8 gap-6 overflow-y-auto max-h-[50vh]">
                 {categories.map((category, idx) => {
                   const Icon = category.icon;
                   const isActive = activeTab === category.id;
@@ -275,19 +346,51 @@ export default function App() {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: idx * 0.05 }}
                       onClick={() => handleTabChange(category.id)}
-                      className={`flex items-center gap-6 text-3xl font-light tracking-tight text-left transition-all ${
-                        isActive ? 'text-[#F27D26]' : 'text-white/40'
-                      }`}
+                      className="flex items-center justify-between group"
                     >
-                      <Icon size={24} strokeWidth={1} />
-                      {label}
+                      <div className={`flex items-center gap-6 text-2xl font-light tracking-tight transition-all ${
+                        isActive ? 'text-[#F27D26]' : 'text-white/40'
+                      }`}>
+                        <Icon size={24} strokeWidth={1} />
+                        {label}
+                      </div>
+                      {isActive && <div className="w-1.5 h-1.5 bg-[#F27D26] rounded-full" />}
                     </motion.button>
                   );
                 })}
               </nav>
 
-              <div className="mt-auto border-t border-white/10 pt-8 text-[9px] tracking-[0.5em] text-white/30 uppercase">
-                Tenerife // South // Guide
+              <div className="mt-auto p-8 bg-white/[0.02] border-t border-white/5">
+                <div className="flex justify-between items-center mb-8">
+                  <span className="text-[10px] tracking-widest text-white/30 uppercase">Language</span>
+                  <div className="flex gap-4">
+                    {languages.map((l) => (
+                      <button
+                        key={l.code}
+                        onClick={() => setLang(l.code)}
+                        className={`text-[12px] font-bold tracking-[0.2em] uppercase px-3 py-1 border transition-all ${
+                          lang === l.code 
+                            ? 'text-black bg-[#F27D26] border-[#F27D26]' 
+                            : 'text-white/30 border-white/10 active:border-white/30'
+                        }`}
+                      >
+                        {l.code}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {weather && (
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] tracking-widest text-white/30 uppercase mb-2">Local Weather</span>
+                      <span className="text-xl font-light text-white leading-none tracking-tight">{weather.temp}°C / Airport TFS</span>
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-[#F27D26]/10 flex items-center justify-center border border-[#F27D26]/20">
+                      {getWeatherIcon(weather.code)}
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}
@@ -295,28 +398,6 @@ export default function App() {
 
         {/* Main Content */}
         <main className="max-w-6xl mx-auto px-8 py-16 min-h-[50vh] w-full z-10 relative">
-          {/* Mobile Search - Only visible on smallest screens */}
-          <div className="sm:hidden mb-8 relative">
-            <input
-              type="text"
-              placeholder={lang === 'EN' ? "Search..." : "Buscar..."}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 py-3 pl-10 pr-4 text-[10px] uppercase tracking-widest text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50"
-            />
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-white/30">
-              <Menu size={14} className="rotate-90" />
-            </div>
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery('')}
-                className="absolute inset-y-0 right-3 flex items-center text-white/30"
-              >
-                <X size={16} />
-              </button>
-            )}
-          </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -880,12 +961,12 @@ function OverviewSection({ t, onImageClick }: { t: any; onImageClick: (src: stri
         >
            <img 
             src={regeneratedImage1} 
-            alt="Palms overlooking the ocean in Las Américas" 
+            alt="The iconic abandoned church ruins in Abades" 
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover opacity-80 group-hover/canvas:opacity-100 group-hover/canvas:scale-105 transition-all duration-1000"
           />
           <div className="absolute top-4 left-4 bg-[#0A0A0A]/80 backdrop-blur-sm border border-white/10 px-3 py-1 text-[9px] uppercase tracking-widest text-white/70">
-            Las Américas
+            Abades
           </div>
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/canvas:opacity-100 transition-opacity bg-black/20">
             <div className="bg-black/50 backdrop-blur-md border border-white/20 p-4 rounded-full text-white">
@@ -911,6 +992,10 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
     
     const vibe = dest.name === 'Costa Adeje' ? 'Luxury' :
                  dest.name === 'Playa de las Américas' ? 'Party' :
+                 dest.name === 'Abades' ? 'Bohemian' :
+                 dest.name === 'Alcalá' ? 'Traditional' :
+                 dest.name === 'Puerto de Santiago' ? 'Traditional' :
+                 dest.name === 'Masca' ? 'Traditional' :
                  dest.name === 'Los Cristianos' ? 'Traditional' :
                  dest.name === 'El Médano' ? 'Bohemian' : 'All';
 
@@ -951,7 +1036,11 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
               // Map to localized description if available
               let description = dest.description;
               if (dest.name === 'Costa Adeje') description = t.adejeDesc;
+              if (dest.name === 'Abades') description = t.abadesDesc;
               if (dest.name === 'Playa de las Américas') description = t.americasDesc;
+              if (dest.name === 'Alcalá') description = t.alcalaDesc;
+              if (dest.name === 'Puerto de Santiago') description = t.puertoSantiagoDesc;
+              if (dest.name === 'Masca') description = t.mascaDesc;
               if (dest.name === 'Los Cristianos') description = t.cristianosDesc;
               if (dest.name === 'El Médano') description = t.medanoDesc;
 
@@ -965,10 +1054,10 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
                   className="group flex flex-col gap-4 cursor-pointer"
                   onClick={() => onSelect(dest)}
                 >
-                  <div className="h-[300px] overflow-hidden border border-white/10 relative">
-                    <img src={dest.image} alt={`Aerial view of ${dest.name}, Tenerife South`} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 opacity-90 group-hover:opacity-100" />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                    <div className="absolute bottom-4 right-4 bg-[#0A0A0A]/90 text-[#F27D26] text-[10px] uppercase px-3 py-1 border border-[#F27D26]/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="h-[300px] overflow-hidden border border-white/10 relative group-hover:border-[#F27D26]/50 transition-colors shadow-2xl shadow-transparent group-hover:shadow-[#F27D26]/5">
+                    <img src={dest.image} alt={`Aerial view of ${dest.name}, Tenerife South`} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 opacity-90 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                    <div className="absolute bottom-6 right-6 bg-[#F27D26] text-black text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
                       {t.explore}
                     </div>
                   </div>
@@ -981,7 +1070,7 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
                       <div className="flex flex-col gap-1 mt-2">
                         {dest.highlights.map((highlight, hIdx) => (
                           <span key={hIdx} className="text-[11px] text-white/40 uppercase tracking-widest font-mono">
-                            // {highlight}
+                            {highlight}
                           </span>
                         ))}
                       </div>
