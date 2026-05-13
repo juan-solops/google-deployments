@@ -350,10 +350,6 @@ export default function App() {
               <span className="text-xs font-mono text-white/60">WET (UTC+0)</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] uppercase opacity-30 mb-1 tracking-widest text-[#F27D26]">{t.hub}</span>
-              <span className="text-xs font-mono text-white/60">Reina Sofía Airport</span>
-            </div>
-            <div className="flex flex-col">
               <span className="text-[9px] uppercase opacity-30 mb-1 tracking-widest text-[#F27D26]">{t.currentTime}</span>
               <span className="text-xs font-mono text-white/60">
                 {currentTime.toLocaleTimeString('en-GB', { 
@@ -364,6 +360,10 @@ export default function App() {
                   second: '2-digit'
                 })}
               </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[9px] uppercase opacity-30 mb-1 tracking-widest text-[#F27D26]">{t.hub}</span>
+              <span className="text-xs font-mono text-white/60">Reina Sofía Airport</span>
             </div>
           </div>
           <div className="text-[9px] tracking-[0.5em] text-white/30 uppercase hidden md:block">
