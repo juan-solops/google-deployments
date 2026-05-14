@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { categories, destinationsList, beaches, activities, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
-import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun } from 'lucide-react';
+import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun, Heart } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin, useApiLoadingStatus, APILoadingStatus } from '@vis.gl/react-google-maps';
 import { i18n, languages, Language } from './i18n';
 import { GoogleGenAI } from '@google/genai';
 import regeneratedImage1 from './assets/images/regenerated_image_1778682985339.webp';
+import losCristianosGif from './assets/images/regenerated_image_1778768618110.gif';
 import { 
   format, 
   addMonths, 
@@ -38,6 +39,33 @@ export default function App() {
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [weather, setWeather] = useState<{temp: number, code: number} | null>(null);
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const saved = localStorage.getItem('beaches_favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [showAbadesAd, setShowAbadesAd] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (selectedItem?.name === 'Abades') {
+      timer = setTimeout(() => {
+        setShowAbadesAd(true);
+      }, 4000); // 4 seconds delay
+    } else {
+      setShowAbadesAd(false);
+    }
+    return () => clearTimeout(timer);
+  }, [selectedItem]);
+
+  useEffect(() => {
+    localStorage.setItem('beaches_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (name: string) => {
+    setFavorites(prev => 
+      prev.includes(name) ? prev.filter(f => f !== name) : [...prev, name]
+    );
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -142,30 +170,58 @@ export default function App() {
         <div className="fixed top-20 right-[-100px] w-[600px] h-[600px] bg-gradient-to-br from-[#F27D26]/10 to-transparent rounded-full blur-[120px] pointer-events-none z-0"></div>
 
         {/* Top bar / Logo area */}
-        <div className="relative w-full px-8 py-8 md:py-12 z-20 max-w-6xl mx-auto flex justify-between items-center border-b border-white/5">
+        <div className="relative w-full px-8 py-8 md:py-12 z-20 max-w-7xl mx-auto flex justify-between items-center border-b border-white/5">
              <div className="flex flex-col translate-y-2">
                <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife</div>
                <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-white/40">South Guide</div>
              </div>
              
              <div className="flex items-center gap-4 md:gap-8">
-                {weather && (
-                  <div className="flex items-center gap-3 group px-4 py-1">
-                    <div className="flex flex-col items-end">
-                      <span className="text-xs md:text-[13px] font-bold text-white leading-none tracking-tight">{weather.temp}°C</span>
-                      <span className="text-[7px] tracking-[0.2em] text-[#F27D26] uppercase font-black mt-1 hidden sm:block">Airport TFS</span>
-                    </div>
-                    <div className="w-8 h-8 rounded-full bg-[#F27D26]/10 flex items-center justify-center border border-[#F27D26]/20">
-                      {getWeatherIcon(weather.code)}
-                    </div>
-                  </div>
-                )}
+                <div className="hidden md:block relative">
+                  <button 
+                    onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                    className="flex items-center gap-2 text-[10px] tracking-widest text-white/60 hover:text-white transition-colors"
+                  >
+                    <Globe size={14} />
+                    <span>{lang}</span>
+                    <ChevronDown size={10} />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isLangMenuOpen && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-48 bg-[#111] border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
+                      >
+                        <div className="grid grid-cols-1 gap-1">
+                          {languages.map((l) => (
+                            <button
+                              key={l.code}
+                              onClick={() => {
+                                setLang(l.code);
+                                setIsLangMenuOpen(false);
+                              }}
+                              className={`flex items-center justify-between px-3 py-2 text-[9px] uppercase tracking-widest hover:bg-white/5 transition-colors ${
+                                lang === l.code ? 'text-[#F27D26]' : 'text-white/60'
+                              }`}
+                            >
+                              {l.name}
+                              {lang === l.code && <Check size={10} />}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
                 <div className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center text-[10px] tracking-widest text-white/50">TFS</div>
              </div>
         </div>
 
         {/* Hero Title Area - Scrolls away */}
-        <header className="relative w-full px-8 pt-12 pb-16 z-10 max-w-6xl mx-auto overflow-hidden">
+        <header className="relative w-full px-8 pt-12 pb-16 z-10 max-w-7xl mx-auto overflow-hidden">
           <div className="relative leading-none mb-8">
             <h1 className="text-[70px] sm:text-[120px] md:text-[180px] lg:text-[240px] font-black uppercase tracking-tighter leading-[0.8] mix-blend-lighten text-white">
               TENER<br/>IFE
@@ -178,11 +234,40 @@ export default function App() {
           <p className="text-xs md:text-[11px] text-white/40 max-w-md uppercase tracking-[0.2em] font-medium leading-relaxed">
             {t.heroSubtitle}
           </p>
+
+          <div className="mt-12 flex flex-wrap items-center gap-8 border-l border-[#F27D26]/30 pl-8 py-3">
+            <div className="flex flex-col">
+              <span className="text-[9px] tracking-[0.3em] text-[#F27D26] uppercase font-black mb-2">Local Time</span>
+              <span className="text-2xl font-light text-white tracking-tight">
+                {currentTime.toLocaleTimeString('en-GB', { 
+                  timeZone: 'Atlantic/Canary', 
+                  hour12: false,
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </span>
+            </div>
+            
+            {weather && (
+              <div className="flex items-center gap-5 sm:border-l sm:border-white/10 sm:pl-8">
+                <div className="flex flex-col">
+                  <span className="text-[9px] tracking-[0.3em] text-[#F27D26] uppercase font-black mb-2">Conditions</span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-light text-white tracking-tight">{weather.temp}°C</span>
+                    <span className="text-[10px] text-white/30 uppercase tracking-widest">TFS South</span>
+                  </div>
+                </div>
+                <div className="w-12 h-12 rounded-full bg-[#F27D26]/5 flex items-center justify-center border border-[#F27D26]/10 shadow-lg shadow-[#F27D26]/5">
+                  {getWeatherIcon(weather.code)}
+                </div>
+              </div>
+            )}
+          </div>
         </header>
 
-        {/* Unified Navigation Bar - Sticky */}
+         {/* Unified Navigation Bar - Sticky */}
         <div className="sticky top-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-xl border-y border-white/10">
-          <div className="max-w-6xl mx-auto px-8 flex justify-between items-center h-16">
+          <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
             {/* Desktop Navigation */}
             <div className="flex items-center gap-4 h-full md:flex-1">
                {/* Mobile Menu Trigger */}
@@ -193,7 +278,7 @@ export default function App() {
                  <Menu size={24} />
                </button>
 
-               <nav className="hidden md:flex gap-6 lg:gap-8 items-center h-full">
+               <nav className="hidden md:flex gap-5 lg:gap-8 items-center h-full">
                  {categories.map((category) => {
                    const Icon = category.icon;
                    const isActive = activeTab === category.id;
@@ -215,68 +300,6 @@ export default function App() {
                    );
                  })}
                </nav>
-            </div>
-
-            {/* Desktop Utilities */}
-            <div className="hidden md:flex items-center gap-6">
-               <div className="relative">
-                 <button 
-                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                   className="flex items-center gap-2 text-[10px] tracking-widest text-white/60 hover:text-white transition-colors"
-                 >
-                   <Globe size={14} />
-                   <span>{lang}</span>
-                   <ChevronDown size={10} />
-                 </button>
-                 
-                 <AnimatePresence>
-                   {isLangMenuOpen && (
-                     <motion.div 
-                       initial={{ opacity: 0, y: 10 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       exit={{ opacity: 0, y: 10 }}
-                       className="absolute right-0 mt-2 w-48 bg-[#111] border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
-                     >
-                       <div className="grid grid-cols-1 gap-1">
-                         {languages.map((l) => (
-                           <button
-                             key={l.code}
-                             onClick={() => {
-                               setLang(l.code);
-                               setIsLangMenuOpen(false);
-                             }}
-                             className={`flex items-center justify-between px-3 py-2 text-[9px] uppercase tracking-widest hover:bg-white/5 transition-colors ${
-                               lang === l.code ? 'text-[#F27D26]' : 'text-white/60'
-                             }`}
-                           >
-                             {l.name}
-                             {lang === l.code && <Check size={10} />}
-                           </button>
-                         ))}
-                       </div>
-                     </motion.div>
-                   )}
-                 </AnimatePresence>
-               </div>
-
-               <div className="relative">
-                  <Menu size={14} className="text-white/20 absolute left-3 top-1/2 -translate-y-1/2 rotate-90" />
-                  <input
-                    type="text"
-                    placeholder={lang === 'EN' ? "SEARCH..." : "BUSCAR..."}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-white/5 border border-white/10 py-2 pl-9 pr-10 w-32 focus:w-48 transition-all duration-500 text-[9px] uppercase tracking-[0.2em] text-white placeholder:text-white/20 focus:outline-none focus:border-[#F27D26]/50 rounded-sm"
-                  />
-                  {searchQuery && (
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
-                    >
-                      <X size={10} />
-                    </button>
-                  )}
-               </div>
             </div>
 
             {/* Mobile Status - Visible only when sticky */}
@@ -361,17 +384,17 @@ export default function App() {
               </nav>
 
               <div className="mt-auto p-8 bg-white/[0.02] border-t border-white/5">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col gap-4 mb-8">
                   <span className="text-[10px] tracking-widest text-white/30 uppercase">Language</span>
-                  <div className="flex gap-4">
+                  <div className="flex flex-wrap gap-2">
                     {languages.map((l) => (
                       <button
                         key={l.code}
                         onClick={() => setLang(l.code)}
-                        className={`text-[12px] font-bold tracking-[0.2em] uppercase px-3 py-1 border transition-all ${
+                        className={`text-[12px] font-bold tracking-[0.2em] uppercase px-3 py-2 border transition-all ${
                           lang === l.code 
                             ? 'text-black bg-[#F27D26] border-[#F27D26]' 
-                            : 'text-white/30 border-white/10 active:border-white/30'
+                            : 'text-white/30 border-white/10 active:border-white/30 hover:border-white/40'
                         }`}
                       >
                         {l.code}
@@ -397,7 +420,7 @@ export default function App() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <main className="max-w-6xl mx-auto px-8 py-16 min-h-[50vh] w-full z-10 relative">
+        <main className="max-w-7xl mx-auto px-8 py-16 min-h-[50vh] w-full z-10 relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -408,11 +431,11 @@ export default function App() {
             >
               {activeTab === 'overview' && <OverviewSection t={t} onImageClick={setFullScreenImage} />}
               {activeTab === 'destinations' && <DestinationsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
-              {activeTab === 'beaches' && <BeachesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
+              {activeTab === 'beaches' && <BeachesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} favorites={favorites} onToggleFavorite={toggleFavorite} lang={lang} />}
               {activeTab === 'localEats' && <LocalEatsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'activities' && <ActivitiesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'agenda' && <AgendaSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
-              {activeTab === 'practical' && <PracticalSection t={t} />}
+              {activeTab === 'practical' && <PracticalSection t={t} weather={weather} />}
             </motion.div>
           </AnimatePresence>
         </main>
@@ -458,11 +481,12 @@ export default function App() {
               onClose={() => setSelectedItem(null)} 
               lang={lang}
               t={t}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
             />
           )}
         </AnimatePresence>
 
-        {/* Global Full Screen Image Viewer */}
         <AnimatePresence>
           {fullScreenImage && (
             <motion.div
@@ -490,12 +514,60 @@ export default function App() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Abades Floating Ad */}
+        <AnimatePresence>
+          {showAbadesAd && (
+            <AbadesAdBanner t={t} onClose={() => setShowAbadesAd(false)} />
+          )}
+        </AnimatePresence>
       </div>
     </APIProvider>
   );
 }
 
-function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () => void; lang: Language; t: any }) {
+function AbadesAdBanner({ t, onClose }: { t: any; onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, x: 50 }}
+      animate={{ opacity: 1, scale: 1, x: 0 }}
+      exit={{ opacity: 0, scale: 0.8, x: 50 }}
+      className="fixed bottom-8 left-8 md:left-auto md:right-8 z-[200] max-w-sm w-[calc(100%-4rem)] md:w-full bg-[#0A0A0A] border border-[#F27D26]/30 shadow-2xl overflow-hidden"
+    >
+      <div className="relative">
+        <button 
+          onClick={onClose}
+          className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full hover:bg-black/80 transition-colors z-10"
+        >
+          <X size={16} />
+        </button>
+        <img 
+          src="/src/assets/images/regenerated_image_1778766841653.jpg" 
+          alt="Abades Ocean Deck House"
+          className="w-full h-44 object-cover"
+        />
+        <div className="p-6">
+           <div className="text-[10px] tracking-[0.3em] font-black text-[#F27D26] uppercase mb-2">Featured Property</div>
+           <h4 className="text-xl font-light text-white mb-2">{t.abadesAdTitle}</h4>
+           <p className="text-sm text-white/50 font-light mb-6 leading-relaxed">
+             {t.abadesAdText}
+           </p>
+           <a 
+             href="https://abades-ocean-deck-house.vercel.app/en" 
+             target="_blank" 
+             rel="noreferrer"
+             className="inline-flex items-center gap-2 bg-[#F27D26] text-black px-6 py-2.5 text-[11px] uppercase tracking-widest font-black hover:bg-[#ff8c3a] transition-colors w-full justify-center"
+           >
+             {t.abadesAdButton}
+             <ExternalLink size={14} />
+           </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ItemDetailModal({ item, onClose, lang, t, favorites, onToggleFavorite }: { item: any; onClose: () => void; lang: Language; t: any; favorites: string[]; onToggleFavorite: (name: string) => void }) {
   const [translatedContent, setTranslatedContent] = useState<any>(null);
   const [isTranslating, setIsTranslating] = useState(false);
 
@@ -583,13 +655,31 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
             onClick={() => setIsFullScreenImageOpen(true)}
           >
             <img 
-              src={item.image} 
+              src={item.name === 'Los Cristianos' ? losCristianosGif : item.image} 
               alt={item.name} 
               referrerPolicy="no-referrer" 
               className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-1000" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent opacity-60" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
+            
+            <div className="absolute top-6 left-6 flex items-center gap-3">
+              {beaches.some(b => b.name === item.name) && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleFavorite(item.name);
+                  }}
+                  className="w-10 h-10 bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors rounded-full"
+                >
+                  <Heart 
+                    size={18} 
+                    className={favorites.includes(item.name) ? 'fill-[#F27D26] text-[#F27D26]' : ''} 
+                  />
+                </button>
+              )}
+            </div>
+
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity pointer-events-none">
               <div className="bg-black/50 backdrop-blur-md border border-white/20 p-3 rounded-full text-white">
                 <ExternalLink size={20} />
               </div>
@@ -875,7 +965,7 @@ function ItemDetailModal({ item, onClose, lang, t }: { item: any; onClose: () =>
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            src={item.image}
+            src={item.name === 'Los Cristianos' ? losCristianosGif : item.image}
             alt={item.name}
             referrerPolicy="no-referrer"
             className="max-w-full max-h-full object-contain shadow-2xl"
@@ -1054,9 +1144,25 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
                   className="group flex flex-col gap-4 cursor-pointer"
                   onClick={() => onSelect(dest)}
                 >
-                  <div className="h-[300px] overflow-hidden border border-white/10 relative group-hover:border-[#F27D26]/50 transition-colors shadow-2xl shadow-transparent group-hover:shadow-[#F27D26]/5">
-                    <img src={dest.image} alt={`Aerial view of ${dest.name}, Tenerife South`} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-110 transition-all duration-1000 opacity-90 group-hover:opacity-100" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                  <div className="h-[300px] overflow-hidden border border-white/10 relative group-hover:border-[#F27D26]/50 transition-all duration-500 shadow-2xl shadow-transparent group-hover:shadow-[#F27D26]/20">
+                    <img 
+                      src={dest.name === 'Los Cristianos' ? losCristianosGif : dest.image} 
+                      alt={`Aerial view of ${dest.name}, Tenerife South`} 
+                      referrerPolicy="no-referrer" 
+                      className={`w-full h-full object-cover transition-all duration-700 ${
+                        dest.name === 'Los Cristianos' 
+                          ? 'opacity-40 grayscale blur-[4px] group-hover:opacity-100 group-hover:grayscale-0 group-hover:blur-0 group-hover:scale-105' 
+                          : 'opacity-90 group-hover:opacity-100 group-hover:scale-110'
+                      }`} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+                    {dest.name === 'Los Cristianos' && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                         <div className="bg-black/60 backdrop-blur-md border border-white/20 p-3 rounded-full opacity-100 group-hover:opacity-0 transition-all duration-300">
+                           <Sparkles size={20} className="text-[#F27D26] animate-pulse" />
+                         </div>
+                      </div>
+                    )}
                     <div className="absolute bottom-6 right-6 bg-[#F27D26] text-black text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-2 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
                       {t.explore}
                     </div>
@@ -1090,8 +1196,9 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
   );
 }
 
-function BeachesSection({ onSelect, t, searchQuery }: { onSelect: (item: any) => void; t: any; searchQuery: string }) {
+function BeachesSection({ onSelect, t, searchQuery, favorites, onToggleFavorite, lang }: { onSelect: (item: any) => void; t: any; searchQuery: string; favorites: string[]; onToggleFavorite: (name: string) => void; lang: Language }) {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const filters = ['All', 'Golden Sand', 'Dark Sand', 'Natural'];
 
   const filteredBeaches = beaches.filter(beach => {
@@ -1103,8 +1210,9 @@ function BeachesSection({ onSelect, t, searchQuery }: { onSelect: (item: any) =>
                           beach.type.toLowerCase().includes(searchStr);
     
     const matchesFilter = activeFilter === 'All' || beach.type.includes(activeFilter);
+    const matchesFavorites = !showOnlyFavorites || favorites.includes(beach.name);
     
-    return matchesSearch && matchesFilter;
+    return matchesSearch && matchesFilter && matchesFavorites;
   });
 
   return (
@@ -1115,64 +1223,98 @@ function BeachesSection({ onSelect, t, searchQuery }: { onSelect: (item: any) =>
           <h2 className="text-4xl text-white font-light leading-tight max-w-xl">{t.beachesTitle}</h2>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {filters.map(filter => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-1.5 text-[9px] uppercase tracking-widest transition-all ${
-                activeFilter === filter 
-                  ? 'bg-[#F27D26] text-black font-bold' 
-                  : 'bg-white/5 text-white/50 hover:bg-white/10'
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+        <div className="flex flex-col items-end gap-6">
+          <div className="flex flex-wrap gap-2 justify-end">
+            {filters.map(filter => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-4 py-1.5 text-[9px] uppercase tracking-widest transition-all ${
+                  activeFilter === filter 
+                    ? 'bg-[#F27D26] text-black font-bold' 
+                    : 'bg-white/5 text-white/50 hover:bg-white/10'
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+          
+          <button
+            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+            className={`flex items-center gap-2 px-4 py-1.5 text-[9px] uppercase tracking-widest transition-all border ${
+              showOnlyFavorites 
+                ? 'bg-[#F27D26]/10 border-[#F27D26] text-[#F27D26]' 
+                : 'border-white/10 text-white/40 hover:border-white/30'
+            }`}
+          >
+            <Heart size={12} className={showOnlyFavorites ? 'fill-[#F27D26]' : ''} />
+            {t.favoritesOnly}
+          </button>
         </div>
       </header>
       
       <div className="grid gap-12 border-t border-white/10 pt-12">
         <AnimatePresence mode="popLayout">
           {filteredBeaches.length > 0 ? (
-            filteredBeaches.map((beach, idx) => (
-              <motion.section 
-                layout
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                key={beach.name} 
-                className="flex flex-col md:flex-row md:items-start gap-8 group cursor-pointer"
-                onClick={() => onSelect(beach)}
-              >
-                <div className="flex-shrink-0 text-white/20 group-hover:text-[#F27D26] transition-colors duration-500 hidden md:block">
-                  <span className="text-5xl font-black">{String(idx + 1).padStart(2, '0')}</span>
-                </div>
-                
-                <div className="flex-grow space-y-4">
-                  <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 border-b border-white/10 pb-4 group-hover:border-[#F27D26]/30 transition-colors">
-                    <h3 className="text-3xl font-light text-white tracking-tight group-hover:text-[#F27D26] transition-colors">{beach.name}</h3>
-                    <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold flex items-center gap-1">
-                      <MapPin size={10}/> {beach.location}
-                    </span>
+            filteredBeaches.map((beach, idx) => {
+              const isFavorite = favorites.includes(beach.name);
+              
+              return (
+                <motion.section 
+                  layout
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  key={beach.name} 
+                  className="flex flex-col md:flex-row md:items-start gap-8 group cursor-pointer relative"
+                  onClick={() => onSelect(beach)}
+                >
+                  <div className="flex-shrink-0 text-white/20 group-hover:text-[#F27D26] transition-colors duration-500 hidden md:block">
+                    <span className="text-5xl font-black">{String(idx + 1).padStart(2, '0')}</span>
                   </div>
                   
-                  <div className="grid md:grid-cols-2 gap-8 pt-2">
-                    <p className="text-white/60 font-light text-sm leading-relaxed">{beach.description}</p>
-                    <div>
-                       <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-2">{t.atmosphere}</span>
-                       <p className="text-[11px] font-mono text-white/70 uppercase tracking-widest">{beach.type}</p>
+                  <div className="flex-grow space-y-4">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 border-b border-white/10 pb-4 group-hover:border-[#F27D26]/30 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <h3 className="text-3xl font-light text-white tracking-tight group-hover:text-[#F27D26] transition-colors">{beach.name}</h3>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleFavorite(beach.name);
+                          }}
+                          className="p-2 transition-transform active:scale-125 md:opacity-0 group-hover:opacity-100"
+                        >
+                          <Heart 
+                            size={20} 
+                            className={`transition-colors ${isFavorite ? 'fill-[#F27D26] text-[#F27D26]' : 'text-white/20 hover:text-white'}`} 
+                          />
+                        </button>
+                      </div>
+                      <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold flex items-center gap-1">
+                        <MapPin size={10}/> {beach.location}
+                      </span>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-8 pt-2">
+                      <p className="text-white/60 font-light text-sm leading-relaxed">{beach.description}</p>
+                      <div>
+                         <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold block mb-2">{t.atmosphere}</span>
+                         <p className="text-[11px] font-mono text-white/70 uppercase tracking-widest">{beach.type}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="hidden md:flex ml-auto items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-[10px] uppercase text-[#F27D26] border border-[#F27D26]/30 px-3 py-1">{t.viewInfo}</span>
-                </div>
-              </motion.section>
-            ))
+                  <div className="hidden md:flex ml-auto items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] uppercase text-[#F27D26] border border-[#F27D26]/30 px-3 py-1">{t.viewInfo}</span>
+                  </div>
+                </motion.section>
+              );
+            })
           ) : (
             <div className="py-20 text-center border border-dashed border-white/10">
-              <p className="text-white/40 font-light italic">No beaches found matching your criteria.</p>
+              <p className="text-white/40 font-light italic">
+                {showOnlyFavorites ? (lang === 'EN' ? "No favorites yet." : "Aún no hay favoritos.") : (lang === 'EN' ? "No beaches found matching your criteria." : "No se han encontrado playas que coincidan con sus criterios.")}
+              </p>
             </div>
           )}
         </AnimatePresence>
@@ -1322,10 +1464,16 @@ function ActivitiesSection({ onSelect, t, searchQuery }: { onSelect: (item: any)
   );
 }
 
-function PracticalSection({ t }: { t: any }) {
+function PracticalSection({ t, weather }: { t: any; weather: any }) {
   const practicalData = [
     { icon: Plane, title: t.airportTitle, content: t.airportText },
-    { icon: Sun, title: t.weatherTitle, content: t.weatherText },
+    { 
+      icon: Sun, 
+      title: t.weatherTitle, 
+      content: weather 
+        ? `${t.weatherText} Currently, it's ${weather.temp}°C at the South Airport.`
+        : t.weatherText 
+    },
     { icon: Bus, title: t.transportTitle, content: t.transportText },
     { icon: Utensils, title: t.foodTitle, content: t.foodText },
   ];

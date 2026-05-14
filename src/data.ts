@@ -856,7 +856,7 @@ export const destinationsList = [
     howToGetThere: "Directly accessible via the TF-1 motorway (Abades exit). Bus 111 connects it to Santa Cruz and Los Cristianos.",
     localSecret: "The abandoned church at the top of the village offers one of the most hauntingly beautiful views of the coast.",
     safetyTips: "Take care when exploring the ruins; some structures are fragile. The beach has no permanent lifeguard.",
-    image: "https://images.unsplash.com/photo-1590523277543-4a85c803006a?auto=format&fit=crop&q=80&w=1200",
+    image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1200",
     lat: 28.1444,
     lng: -16.4350,
     address: "Plaza de Abades, 38588 Arico, Santa Cruz de Tenerife",

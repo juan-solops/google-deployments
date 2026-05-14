@@ -60,6 +60,11 @@ export interface Translations {
   officialSite: string;
   currentTime: string;
   rating: string;
+  favorites: string;
+  favoritesOnly: string;
+  abadesAdTitle: string;
+  abadesAdText: string;
+  abadesAdButton: string;
 }
 
 export const languages: { code: Language; name: string }[] = [
@@ -135,6 +140,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'House Specialty',
     priceLevel: 'Price',
     rating: 'Rating',
+    favorites: 'Favorites',
+    favoritesOnly: 'Favorites Only',
+    abadesAdTitle: 'Abades Ocean Deck House',
+    abadesAdText: 'A stunning coastal retreat where the ocean meets your doorstep. Panoramic views and ultimate serenity in Abades.',
+    abadesAdButton: 'Book Your Stay',
   },
   ES: {
     overview: 'Resumen',
@@ -196,6 +206,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Especialidad de la Casa',
     priceLevel: 'Precio',
     rating: 'Valoración',
+    favorites: 'Favoritos',
+    favoritesOnly: 'Solo Favoritos',
+    abadesAdTitle: 'Abades Ocean Deck House',
+    abadesAdText: 'Un refugio costero impresionante donde el océano llega a tu puerta. Vistas panorámicas y serenidad total en Abades.',
+    abadesAdButton: 'Reserva tu Estancia',
   },
   FR: {
     overview: 'Aperçu',
@@ -257,6 +272,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Spécialité Maison',
     priceLevel: 'Prix',
     rating: 'Note',
+    favorites: 'Favoris',
+    favoritesOnly: 'Favoris Uniquement',
+    abadesAdTitle: 'Villa de Luxe sur l\'Océan',
+    abadesAdText: 'Superbe location de vacances à Abades avec vue panoramique sur la mer. Réservez votre séjour serein !',
+    abadesAdButton: 'Voir la Propriété',
   },
   DE: {
     overview: 'Übersicht',
@@ -318,6 +338,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Haus-Spezialität',
     priceLevel: 'Preis',
     rating: 'Bewertung',
+    favorites: 'Favoriten',
+    favoritesOnly: 'Nur Favoriten',
+    abadesAdTitle: 'Luxus-Ozean-Villa',
+    abadesAdText: 'Atemberaubendes Ferienhaus in Abades mit Panorama-Meerblick. Buche jetzt deinen entspannten Urlaub!',
+    abadesAdButton: 'Unterkunft Ansehen',
   },
   NL: {
     overview: 'Overzicht',
@@ -379,6 +404,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Huis Specialiteit',
     priceLevel: 'Prijs',
     rating: 'Beoordeling',
+    favorites: 'Favorieten',
+    favoritesOnly: 'Alleen Favorieten',
+    abadesAdTitle: 'Luxe Oceaanvilla',
+    abadesAdText: 'Prachtige vakantiewoning in Abades met panoramisch uitzicht op zee. Boek nu je rustige uitje!',
+    abadesAdButton: 'Bekijk Accommodatie',
   },
   IT: {
     overview: 'Panoramica',
@@ -440,6 +470,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Specialità della Casa',
     priceLevel: 'Prezzo',
     rating: 'Valutazione',
+    favorites: 'Preferiti',
+    favoritesOnly: 'Solo Preferiti',
+    abadesAdTitle: 'Villa di Lusso sull\'Oceano',
+    abadesAdText: 'Splendida casa vacanze ad Abades con vista panoramica sul mare. Prenota ora la tua fuga serena!',
+    abadesAdButton: 'Vedi Proprietà',
   },
   PT: {
     overview: 'Visão Geral',
@@ -501,6 +536,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Especialidade da Casa',
     priceLevel: 'Preço',
     rating: 'Avaliação',
+    favorites: 'Favoritos',
+    favoritesOnly: 'Apenas Favoritos',
+    abadesAdTitle: 'Villa de Luxo no Oceano',
+    abadesAdText: 'Incrível aluguer de férias em Abades com vistas panorâmicas sobre o mar. Reserve já o seu refúgio!',
+    abadesAdButton: 'Ver Propriedade',
   },
   PL: {
     overview: 'Przegląd',
@@ -562,6 +602,11 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Specjalność Domu',
     priceLevel: 'Cena',
     rating: 'Ocena',
+    favorites: 'Ulubione',
+    favoritesOnly: 'Tylko Ulubione',
+    abadesAdTitle: 'Luksusowa Willa nad Oceanem',
+    abadesAdText: 'Niesamowity wynajem wakacyjny w Abades z panoramicznym widokiem na morze. Zarezerwuj swój spokój już teraz!',
+    abadesAdButton: 'Zobacz Obiekt',
   },
   UK: {
     overview: 'Огляд',
@@ -623,5 +668,10 @@ export const i18n: Record<Language, Translations> = {
     specialty: 'Фірмова страва',
     priceLevel: 'Ціна',
     rating: 'Рейтинг',
+    favorites: 'Вибране',
+    favoritesOnly: 'Тільки Вибране',
+    abadesAdTitle: 'Розкішна вілла на березі океану',
+    abadesAdText: 'Приголомшливе житло для відпочинку в Абадесі з панорамним видом на море. Забронюйте свій незабутній відпочинок вже зараз!',
+    abadesAdButton: 'Переглянути',
   },
 };
