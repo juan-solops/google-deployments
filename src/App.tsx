@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { categories, destinationsList, beaches, activities, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
-import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun, Heart } from 'lucide-react';
+import { categories, destinationsList, beaches, activities, naturalPools, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
+import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun, Heart, Waves } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin, useApiLoadingStatus, APILoadingStatus } from '@vis.gl/react-google-maps';
 import { i18n, languages, Language } from './i18n';
 import { GoogleGenAI } from '@google/genai';
@@ -455,6 +455,7 @@ export default function App() {
               {activeTab === 'overview' && <OverviewSection t={t} onImageClick={setFullScreenImage} />}
               {activeTab === 'destinations' && <DestinationsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'beaches' && <BeachesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} favorites={favorites} onToggleFavorite={toggleFavorite} lang={lang} />}
+              {activeTab === 'naturalPools' && <NaturalPoolsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'localEats' && <LocalEatsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'activities' && <ActivitiesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'agenda' && <AgendaSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} lang={lang} />}
@@ -1320,7 +1321,7 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
 function BeachesSection({ onSelect, t, searchQuery, favorites, onToggleFavorite, lang }: { onSelect: (item: any) => void; t: any; searchQuery: string; favorites: string[]; onToggleFavorite: (name: string) => void; lang: Language }) {
   const [activeFilter, setActiveFilter] = useState(t.all);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
-  const filters = [t.all, t.goldenSand, t.darkSand, t.natural];
+  const filters = [t.all, t.top10, t.goldenSand, t.darkSand, t.natural];
 
   const filteredBeaches = beaches.filter(beach => {
     const searchStr = searchQuery.toLowerCase();
@@ -1333,13 +1334,18 @@ function BeachesSection({ onSelect, t, searchQuery, favorites, onToggleFavorite,
     // Technical mapping to data internal types
     const internalFilter = activeFilter === t.goldenSand ? 'Golden Sand' :
                           activeFilter === t.darkSand ? 'Dark Sand' :
-                          activeFilter === t.natural ? 'Natural' : 'All';
+                          activeFilter === t.natural ? 'Natural' : 
+                          activeFilter === t.top10 ? 'Top10' : 'All';
 
-    const matchesFilter = internalFilter === 'All' || beach.type.includes(internalFilter);
+    const matchesFilter = internalFilter === 'All' || internalFilter === 'Top10' || beach.type.includes(internalFilter);
     const matchesFavorites = !showOnlyFavorites || favorites.includes(beach.name);
     
     return matchesSearch && matchesFilter && matchesFavorites;
   });
+
+  const displayBeaches = activeFilter === t.top10 
+    ? [...filteredBeaches].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 10)
+    : filteredBeaches;
 
   return (
     <article>
@@ -1382,8 +1388,8 @@ function BeachesSection({ onSelect, t, searchQuery, favorites, onToggleFavorite,
       
       <div className="grid gap-12 border-t border-white/10 pt-12">
         <AnimatePresence mode="popLayout">
-          {filteredBeaches.length > 0 ? (
-            filteredBeaches.map((beach, idx) => {
+          {displayBeaches.length > 0 ? (
+            displayBeaches.map((beach, idx) => {
               const isFavorite = favorites.includes(beach.name);
               
               return (
@@ -1404,6 +1410,12 @@ function BeachesSection({ onSelect, t, searchQuery, favorites, onToggleFavorite,
                     <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 border-b border-white/10 pb-4 group-hover:border-[#F27D26]/30 transition-colors">
                       <div className="flex items-center gap-4">
                         <h3 className="text-3xl font-light text-white tracking-tight group-hover:text-[#F27D26] transition-colors">{beach.name}</h3>
+                        {beach.rating && (
+                          <div className="flex items-center gap-1 bg-[#F27D26]/10 px-2 py-0.5 rounded-sm border border-[#F27D26]/50">
+                            <Star size={10} className="fill-[#F27D26] text-[#F27D26]" />
+                            <span className="text-[10px] font-mono font-bold text-[#F27D26]">{beach.rating}</span>
+                          </div>
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -1590,6 +1602,75 @@ function ActivitiesSection({ onSelect, t, searchQuery }: { onSelect: (item: any)
   );
 }
 
+function NaturalPoolsSection({ onSelect, t, searchQuery }: { onSelect: (item: any) => void; t: any; searchQuery: string }) {
+  const filteredPools = naturalPools.filter(pool => {
+    const searchStr = searchQuery.toLowerCase();
+    return pool.name.toLowerCase().includes(searchStr) || 
+           pool.description.toLowerCase().includes(searchStr) ||
+           pool.detailedDescription.toLowerCase().includes(searchStr) ||
+           pool.location.toLowerCase().includes(searchStr);
+  });
+
+  return (
+    <article>
+      <header className="mb-12">
+        <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold block mb-4">{t.naturalPools}</span>
+        <h2 className="text-4xl text-white font-light leading-tight max-w-xl">{t.naturalPoolsTitle}</h2>
+      </header>
+      
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 border-t border-white/10 pt-12">
+        <AnimatePresence mode="popLayout">
+          {filteredPools.length > 0 ? (
+            filteredPools.map((pool, i) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                key={pool.name}
+                onClick={() => onSelect(pool)}
+                className="group cursor-pointer flex flex-col h-full bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden"
+              >
+                <div className="aspect-[16/10] overflow-hidden relative">
+                  <img 
+                    src={pool.image} 
+                    alt={pool.name} 
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  />
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 text-[9px] uppercase tracking-widest text-[#F27D26] border border-[#F27D26]/30 flex items-center gap-2">
+                    <Waves size={10} />
+                    {t.natural}
+                  </div>
+                </div>
+                <div className="p-6 space-y-4 flex flex-col flex-grow">
+                  <div className="flex justify-between items-start gap-4">
+                    <h3 className="text-xl font-light text-white group-hover:text-[#F27D26] transition-colors">{pool.name}</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/40 text-[10px] uppercase tracking-widest">
+                    <MapPin size={10} className="text-[#F27D26]" />
+                    {pool.location}
+                  </div>
+                  <p className="text-white/60 font-light text-sm leading-relaxed line-clamp-3">
+                    {pool.description}
+                  </p>
+                  <div className="pt-4 border-t border-white/5 flex items-center justify-end mt-auto">
+                    <span className="text-[10px] uppercase text-[#F27D26] border border-[#F27D26]/30 px-3 py-1 opacity-0 group-hover:opacity-100 transition-all">{t.viewInfo}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-sm">
+              <p className="text-white/40 font-light italic">{t.noNaturalPoolsFound}</p>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </article>
+  );
+}
+
 function PracticalSection({ t, weather }: { t: any; weather: any }) {
   const practicalData = [
     { icon: Plane, title: t.airportTitle, content: t.airportContent },
@@ -1635,6 +1716,7 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // Default to May 2026 for demo consistency
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [activeType, setActiveType] = useState(t.all);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   
   const types = [t.all, t.traditional, t.festival, t.sports, t.market];
 
@@ -1646,7 +1728,12 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
                           event.location.toLowerCase().includes(searchStr) ||
                           event.type.toLowerCase().includes(searchStr);
     
-    const matchesType = activeType === t.all || event.type.includes(activeType);
+    // Technical mapping to data internal types
+    const typeMatch = activeType === t.all || 
+                     (activeType === t.traditional && event.type === 'Traditional') ||
+                     (activeType === t.festival && event.type === 'Festival') ||
+                     (activeType === t.sports && event.type === 'Sports') ||
+                     (activeType === t.market && event.type === 'Market');
 
     if (!event.dateStart) return false;
     const eventDate = parseISO(event.dateStart);
@@ -1656,12 +1743,6 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
     } else {
       matchesDateValue = isSameMonth(eventDate, currentMonth);
     }
-
-    const typeMatch = activeType === t.all || 
-                     (activeType === t.traditional && event.type === 'Traditional') ||
-                     (activeType === t.festival && event.type === 'Festival') ||
-                     (activeType === t.sports && event.type === 'Sports') ||
-                     (activeType === t.market && event.type === 'Market');
 
     return matchesSearch && typeMatch && matchesDateValue;
   });
@@ -1674,7 +1755,23 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
       <header className="mb-12">
         <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold block mb-4">{t.agenda}</span>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <h2 className="text-4xl text-white font-light leading-tight max-w-xl">{t.agendaTitle}</h2>
+          <div>
+            <h2 className="text-4xl text-white font-light leading-tight max-w-xl">{t.agendaTitle}</h2>
+            <div className="flex gap-4 mt-6">
+              <button 
+                onClick={() => setViewMode('list')}
+                className={`text-[9px] uppercase tracking-widest px-4 py-2 border transition-all ${viewMode === 'list' ? 'bg-white text-black border-white font-bold' : 'text-white/40 border-white/10 hover:border-white/30'}`}
+              >
+                List View
+              </button>
+              <button 
+                onClick={() => setViewMode('map')}
+                className={`text-[9px] uppercase tracking-widest px-4 py-2 border transition-all ${viewMode === 'map' ? 'bg-white text-black border-white font-bold' : 'text-white/40 border-white/10 hover:border-white/30'}`}
+              >
+                Map View
+              </button>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-2">
             {types.map(type => (
               <button
@@ -1709,55 +1806,78 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
             )}
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <AnimatePresence mode="popLayout">
-              {filteredEvents.length > 0 ? (
-                filteredEvents.map((event) => (
-                  <motion.section 
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    key={event.id} 
-                    className="group flex flex-col bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden cursor-pointer h-full"
-                    onClick={() => onSelect(event)}
-                  >
-                    <div className="h-40 overflow-hidden relative">
-                      <img 
-                        src={event.image} 
-                        alt={event.name} 
-                        referrerPolicy="no-referrer" 
-                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
-                      />
-                      <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[9px] uppercase tracking-widest text-[#F27D26] border border-[#F27D26]/30">
-                        {event.type}
-                      </div>
-                    </div>
-                    <div className="p-6 space-y-4 flex flex-col flex-grow">
-                      <div className="flex justify-between items-start gap-4">
-                        <h3 className="text-lg font-light text-white group-hover:text-[#F27D26] transition-colors">{event.name}</h3>
-                        <span className="text-[10px] font-mono text-white/40 uppercase whitespace-nowrap bg-white/5 px-2 py-0.5">{event.date}</span>
-                      </div>
-                      <p className="text-white/60 font-light text-xs leading-relaxed line-clamp-2 italic flex-grow">
-                        {event.description}
-                      </p>
-                      <div className="pt-4 border-t border-white/5 flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-2 text-[10px] tracking-widest text-[#F27D26] font-bold uppercase">
-                          <MapPin size={10} />
-                          {event.location}
+          <AnimatePresence mode="wait">
+            {viewMode === 'list' ? (
+              <motion.div 
+                key="list"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="grid md:grid-cols-2 gap-8"
+              >
+                {filteredEvents.length > 0 ? (
+                  filteredEvents.map((event) => (
+                    <motion.section 
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      key={event.id} 
+                      className="group flex flex-col bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden cursor-pointer h-full"
+                      onClick={() => onSelect(event)}
+                    >
+                      <div className="h-40 overflow-hidden relative">
+                        <img 
+                          src={event.image} 
+                          alt={event.name} 
+                          referrerPolicy="no-referrer" 
+                          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+                        />
+                        <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[9px] uppercase tracking-widest text-[#F27D26] border border-[#F27D26]/30">
+                          {event.type}
                         </div>
-                        <div className="w-1 h-1 bg-[#F27D26] animate-pulse rounded-full" />
                       </div>
-                    </div>
-                  </motion.section>
-                ))
-              ) : (
-                <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-sm">
-                  <p className="text-white/40 font-light italic">No events scheduled for this selection.</p>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
+                      <div className="p-6 space-y-4 flex flex-col flex-grow">
+                        <div className="flex justify-between items-start gap-4">
+                          <h3 className="text-lg font-light text-white group-hover:text-[#F27D26] transition-colors">{event.name}</h3>
+                          <span className="text-[10px] font-mono text-white/40 uppercase whitespace-nowrap bg-white/5 px-2 py-0.5">{event.date}</span>
+                        </div>
+                        <p className="text-white/60 font-light text-xs leading-relaxed line-clamp-2 italic flex-grow">
+                          {event.description}
+                        </p>
+                        <div className="pt-4 border-t border-white/5 flex items-center justify-between mt-auto">
+                          <div className="flex items-center gap-2 text-[10px] tracking-widest text-[#F27D26] font-bold uppercase">
+                            <MapPin size={10} />
+                            {event.location}
+                          </div>
+                          <div className="w-1 h-1 bg-[#F27D26] animate-pulse rounded-full" />
+                        </div>
+                      </div>
+                    </motion.section>
+                  ))
+                ) : (
+                  <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-sm">
+                    <p className="text-white/40 font-light italic">No events scheduled for this selection.</p>
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="map"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="h-[600px] border border-white/10 bg-white/5 relative"
+              >
+                <EventsMap events={filteredEvents} onSelect={onSelect} />
+                {filteredEvents.length === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <p className="text-white/40 font-light italic">No events to display on map.</p>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <aside className="order-1 lg:order-2 space-y-8 sticky top-8">
@@ -1786,6 +1906,50 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
     </article>
   );
 }
+
+function EventsMap({ events, onSelect }: { events: any[]; onSelect: (item: any) => void }) {
+  const status = useApiLoadingStatus();
+
+  if (status === APILoadingStatus.AUTH_FAILURE) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 text-center h-full gap-2 border border-red-500/30 bg-red-500/10">
+        <span className="text-red-400 font-bold mb-1">Google Maps Auth Error</span>
+        <span className="text-sm font-light text-white/80">The Maps API could not load.</span>
+      </div>
+    );
+  }
+
+  // Calculate center of filtered events or default to South Tenerife
+  const center = events.length > 0 
+    ? { 
+        lat: events.reduce((acc, curr) => acc + curr.lat, 0) / events.length,
+        lng: events.reduce((acc, curr) => acc + curr.lng, 0) / events.length
+      }
+    : { lat: 28.05, lng: -16.7 };
+
+  return (
+    <Map
+      defaultCenter={center}
+      defaultZoom={11}
+      mapId="EVENTS_MAP_ID"
+      internalUsageAttributionIds={['gmp_mcp_codeassist_v1_aistudio']}
+      disableDefaultUI={true}
+      style={{ width: '100%', height: '100%' }}
+    >
+      {events.map((event) => (
+        <AdvancedMarker 
+          key={event.id}
+          position={{ lat: event.lat, lng: event.lng }} 
+          title={event.name}
+          onClick={() => onSelect(event)}
+        >
+          <Pin background="#F27D26" borderColor="#0A0A0A" glyphColor="#fff" scale={1} />
+        </AdvancedMarker>
+      ))}
+    </Map>
+  );
+}
+
 
 function CalendarWidget({ 
   currentMonth, 
