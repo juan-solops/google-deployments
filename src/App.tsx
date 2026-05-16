@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { categories, destinationsList, beaches, activities, naturalPools, practicalInfo, culturalEvents, localEats, Restaurant } from './data';
-import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun, Heart, Waves } from 'lucide-react';
+import { categories, destinationsList, beaches, activities, naturalPools, practicalInfo, culturalEvents, localEats, Restaurant, nightlifeClubs } from './data';
+import { MapPin, Calendar, X, ExternalLink, Menu, Globe, ChevronDown, Check, Sparkles, Plane, Sun, Bus, Utensils, Maximize2, Clock, Star, Cloud, CloudRain, CloudLightning, CloudSun, Heart, Waves, Music, Umbrella, ShowerHead, ParkingCircle, Accessibility } from 'lucide-react';
 import { APIProvider, Map, AdvancedMarker, Pin, useApiLoadingStatus, APILoadingStatus } from '@vis.gl/react-google-maps';
 import { i18n, languages, Language } from './i18n';
 import { GoogleGenAI } from '@google/genai';
@@ -292,7 +292,7 @@ export default function App() {
         <div className="sticky top-0 z-40 bg-[#0A0A0A]/90 backdrop-blur-xl border-y border-white/10">
           <div className="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
             {/* Desktop Navigation */}
-            <div className="flex items-center gap-4 h-full md:flex-1">
+            <div className="flex items-center gap-4 h-full md:flex-1 min-w-0">
                {/* Mobile Menu Trigger */}
                <button 
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -301,7 +301,7 @@ export default function App() {
                  <Menu size={24} />
                </button>
 
-               <nav className="hidden md:flex gap-5 lg:gap-8 items-center h-full">
+               <nav className="hidden md:flex gap-5 lg:gap-8 items-center h-full overflow-x-auto hide-scrollbar">
                  {categories.map((category) => {
                    const Icon = category.icon;
                    const isActive = activeTab === category.id;
@@ -311,7 +311,7 @@ export default function App() {
                      <button
                        key={category.id}
                        onClick={() => handleTabChange(category.id)}
-                       className={`h-full flex items-center gap-2 text-[10px] tracking-widest font-medium uppercase transition-all whitespace-nowrap border-b-2 ${
+                       className={`h-full flex-shrink-0 flex items-center gap-2 text-[10px] tracking-widest font-medium uppercase transition-all whitespace-nowrap border-b-2 ${
                          isActive 
                            ? 'text-white border-b-[#F27D26]' 
                            : 'text-white/50 hover:text-white border-b-transparent'
@@ -345,7 +345,7 @@ export default function App() {
               transition={{ type: 'spring', damping: 30, stiffness: 200 }}
               className="fixed inset-0 z-[60] md:hidden bg-[#0A0A0A] flex flex-col pt-12"
             >
-              <div className="flex justify-between items-center px-8 mb-12">
+              <div className="flex justify-between items-center px-8 mb-8 flex-shrink-0">
                 <div className="flex flex-col">
                   <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-[#F27D26]">Tenerife</div>
                   <div className="text-[10px] tracking-[0.4em] font-bold uppercase text-white/40">South Guide</div>
@@ -358,7 +358,7 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="px-8 mb-12">
+              <div className="px-8 mb-8 flex-shrink-0">
                  <div className="relative">
                     <Menu size={18} className="text-white/20 absolute left-4 top-1/2 -translate-y-1/2 rotate-90" />
                     <input
@@ -379,7 +379,7 @@ export default function App() {
                  </div>
               </div>
 
-              <nav className="flex flex-col px-8 gap-6 overflow-y-auto max-h-[50vh]">
+              <nav className="flex flex-col px-8 gap-6 overflow-y-auto flex-grow pb-8">
                 {categories.map((category, idx) => {
                   const Icon = category.icon;
                   const isActive = activeTab === category.id;
@@ -406,7 +406,7 @@ export default function App() {
                 })}
               </nav>
 
-              <div className="mt-auto p-8 bg-white/[0.02] border-t border-white/5">
+              <div className="mt-auto p-8 flex-shrink-0 bg-white/[0.02] border-t border-white/5">
                 <div className="flex flex-col gap-4 mb-8">
                   <span className="text-[10px] tracking-widest text-white/30 uppercase">{t.language}</span>
                   <div className="flex flex-wrap gap-2">
@@ -457,6 +457,7 @@ export default function App() {
               {activeTab === 'beaches' && <BeachesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} favorites={favorites} onToggleFavorite={toggleFavorite} lang={lang} />}
               {activeTab === 'naturalPools' && <NaturalPoolsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'localEats' && <LocalEatsSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
+              {activeTab === 'party' && <PartySection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'activities' && <ActivitiesSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} />}
               {activeTab === 'agenda' && <AgendaSection onSelect={setSelectedItem} t={t} searchQuery={searchQuery} lang={lang} />}
               {activeTab === 'practical' && <PracticalSection t={t} weather={weather} />}
@@ -902,6 +903,68 @@ function ItemDetailModal({ item, onClose, lang, t, favorites, onToggleFavorite }
               )}
             </div>
 
+            {/* Beach Amenities Section */}
+            {item.amenities && (
+              <div className="border-t border-white/10 pt-8">
+                <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold block mb-6">
+                  {t.amenities}
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
+                      <Sun size={14} className="text-[#F27D26]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">{t.sunLoungers}</span>
+                      <p className="text-sm text-white/80 font-light">{item.amenities.sunLoungers}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
+                      <Umbrella size={14} className="text-[#F27D26]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">{t.umbrellas}</span>
+                      <p className="text-sm text-white/80 font-light">{item.amenities.umbrellas}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
+                      <ShowerHead size={14} className="text-[#F27D26]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">{t.showers}</span>
+                      <p className="text-sm text-white/80 font-light">{item.amenities.showers}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
+                      <ParkingCircle size={14} className="text-[#F27D26]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">{t.parking}</span>
+                      <p className="text-sm text-white/80 font-light">{item.amenities.parking}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 sm:col-span-2">
+                    <div className="p-2 bg-white/5 border border-white/10 rounded-sm">
+                      <Accessibility size={14} className="text-[#F27D26]" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-2">{t.accessibility}</span>
+                      <div className="flex flex-wrap gap-2">
+                        {item.amenities.accessibility.map((feature: string, idx: number) => (
+                          <span key={idx} className="text-[11px] font-mono text-[#F27D26] bg-[#F27D26]/5 border border-[#F27D26]/10 px-2 py-0.5 rounded-sm">
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Travel Sections */}
             <div className="space-y-12 border-t border-white/10 pt-8">
               {display.whatToBring && (
@@ -1204,7 +1267,7 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
         </div>
       </header>
       
-      <div className="grid sm:grid-cols-2 gap-12 border-t border-white/10 pt-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 border-t border-white/10 pt-12">
         <AnimatePresence mode="popLayout">
           {filteredDestinations.length > 0 ? (
             filteredDestinations.map((dest, idx) => {
@@ -1515,6 +1578,184 @@ function LocalEatsSection({ onSelect, t, searchQuery }: { onSelect: (item: Resta
   );
 }
 
+function PartySection({ onSelect, t, searchQuery }: { onSelect: (item: any) => void; t: any; searchQuery: string }) {
+  const [activeFilter, setActiveFilter] = useState(t.all);
+  const filters = [t.all, t.clubs, t.liveMusic, t.pubs, t.festivals, t.underground, t.latin];
+
+  const filteredClubs = nightlifeClubs.filter(club => {
+    const searchStr = searchQuery.toLowerCase();
+    const matchesSearch = club.name.toLowerCase().includes(searchStr) || 
+                          club.description.toLowerCase().includes(searchStr) ||
+                          club.location.toLowerCase().includes(searchStr);
+    
+    if (activeFilter === t.all) return matchesSearch;
+    if (activeFilter === t.clubs && (club.type.toLowerCase().includes('club'))) return matchesSearch;
+    if (activeFilter === t.liveMusic && (club.type.toLowerCase().includes('live music') || club.type.toLowerCase().includes('venue'))) return matchesSearch;
+    if (activeFilter === t.pubs && (club.type.toLowerCase().includes('pub') || club.type.toLowerCase().includes('bar'))) return matchesSearch;
+    if (activeFilter === t.underground && club.musicType.some(m => m === 'Techno' || m === 'Deep House' || m === 'Rock' || m === 'Blues' || m === 'Alternative')) return matchesSearch;
+    if (activeFilter === t.latin && (club.musicType.includes('Reggaeton') || club.musicType.includes('Salsa') || club.musicType.includes('Bachata'))) return matchesSearch;
+    return false;
+  });
+
+  const partyEvents = culturalEvents.filter(event => {
+    const isParty = event.type.toLowerCase().includes('party') || 
+                    event.type.toLowerCase().includes('festival') ||
+                    event.type.toLowerCase().includes('electronic');
+    
+    const searchStr = searchQuery.toLowerCase();
+    const matchesSearch = event.name.toLowerCase().includes(searchStr) || 
+                          event.location.toLowerCase().includes(searchStr);
+
+    if (activeFilter === t.all) return isParty && matchesSearch;
+    if (activeFilter === t.festivals && event.type.toLowerCase().includes('festival')) return isParty && matchesSearch;
+    if (activeFilter === t.underground && event.type.toLowerCase().includes('electronic')) return isParty && matchesSearch;
+    return false;
+  });
+
+  return (
+    <article>
+      <header className="mb-12">
+        <span className="text-[10px] uppercase tracking-widest text-[#F27D26] font-bold block mb-4">{t.party}</span>
+        <h2 className="text-4xl text-white font-light leading-tight max-w-xl mb-8">{t.partyTitle}</h2>
+        
+        <div className="flex flex-wrap gap-2">
+          {filters.map(filter => (
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`px-4 py-1.5 text-[9px] uppercase tracking-widest transition-all border ${
+                activeFilter === filter 
+                  ? 'bg-[#F27D26] text-black font-bold border-[#F27D26]' 
+                  : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div className="space-y-16">
+        {/* Clubs & Venues Grid */}
+        {(activeFilter === t.all || activeFilter === t.clubs || activeFilter === t.underground || activeFilter === t.latin || activeFilter === t.liveMusic || activeFilter === t.pubs) && filteredClubs.length > 0 && (
+          <section>
+            <div className="flex items-center gap-4 mb-8">
+               <div className="h-[1px] flex-grow bg-white/10"></div>
+               <h3 className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-black">
+                 {activeFilter === t.liveMusic ? 'Live Music Stages' : activeFilter === t.pubs ? 'Authentic Pubs' : 'Top Venues'}
+               </h3>
+               <div className="h-[1px] flex-grow bg-white/10"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredClubs.map((club, idx) => (
+                <motion.div
+                  key={club.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  onClick={() => onSelect(club)}
+                  className="group cursor-pointer bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden flex flex-col"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img 
+                      src={club.image} 
+                      alt={club.name} 
+                      className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+                    />
+                    <div className="absolute top-4 left-4 flex gap-1">
+                      {club.musicType.slice(0, 2).map(m => (
+                        <span key={m} className="bg-black/60 backdrop-blur-md border border-white/10 px-2 py-0.5 text-[8px] uppercase tracking-widest text-[#F27D26]">
+                          {m}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="p-6 flex-grow flex flex-col">
+                    <div className="flex justify-between items-start mb-2">
+                       <h4 className="text-xl font-light text-white group-hover:text-[#F27D26] transition-colors">{club.name}</h4>
+                       <div className="flex items-center gap-1 text-[#F27D26] font-mono text-xs">
+                         <Star size={10} className="fill-[#F27D26]" />
+                         {club.rating}
+                       </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/40 text-[9px] uppercase tracking-widest mb-4">
+                      <MapPin size={10} />
+                      {club.location}
+                    </div>
+                    <p className="text-sm text-white/60 font-light leading-relaxed line-clamp-2 mb-6">
+                      {club.description}
+                    </p>
+                    <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center text-[9px] tracking-widest uppercase text-white/30 font-bold">
+                       <span>{club.type}</span>
+                       <span className="group-hover:text-[#F27D26] transition-colors">Details +</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 2026 Parties / Festivals */}
+        {(activeFilter === 'All' || activeFilter === 'Festivals' || activeFilter === 'Underground') && partyEvents.length > 0 && (
+          <section>
+            <div className="flex items-center gap-4 mb-8">
+               <div className="h-[1px] flex-grow bg-[#F27D26]/20"></div>
+               <h3 className="text-[10px] uppercase tracking-[0.3em] text-[#F27D26] font-black">2026 Party Calendar</h3>
+               <div className="h-[1px] flex-grow bg-[#F27D26]/20"></div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {partyEvents.map((event, idx) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  onClick={() => onSelect(event)}
+                  className="flex bg-white/5 border border-white/10 hover:border-[#F27D26]/50 transition-all cursor-pointer overflow-hidden group"
+                >
+                  <div className="w-1/3 aspect-square overflow-hidden relative border-r border-white/10">
+                    <img 
+                      src={event.image} 
+                      alt={event.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4">
+                       <Calendar size={14} className="text-[#F27D26] mb-1" />
+                       <span className="text-[10px] text-white font-bold uppercase tracking-widest">{event.date}</span>
+                    </div>
+                  </div>
+                  <div className="w-2/3 p-6 flex flex-col">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[#F27D26] font-black mb-2">{event.type}</span>
+                    <h4 className="text-xl font-light text-white mb-2 group-hover:text-[#F27D26] transition-colors">{event.name}</h4>
+                    <p className="text-sm text-white/50 font-light mb-4 line-clamp-2 leading-relaxed">
+                      {event.description}
+                    </p>
+                    <div className="mt-auto flex justify-between items-center text-[10px] tracking-widest uppercase text-white/40">
+                      <div className="flex items-center gap-2">
+                        <MapPin size={12} className="text-[#F27D26]" />
+                        {event.location}
+                      </div>
+                      <span className="font-mono text-[#F27D26]">{event.price}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {filteredClubs.length === 0 && partyEvents.length === 0 && (
+          <div className="py-20 text-center border border-dashed border-white/10">
+            <p className="text-white/40 font-light italic">{t.noClubsFound}</p>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
 function ActivitiesSection({ onSelect, t, searchQuery }: { onSelect: (item: any) => void; t: any; searchQuery: string }) {
   const [activeFilter, setActiveFilter] = useState(t.all);
   const filters = [t.all, t.nature, t.adventure, t.family, t.water];
@@ -1560,7 +1801,7 @@ function ActivitiesSection({ onSelect, t, searchQuery }: { onSelect: (item: any)
         </div>
       </header>
       
-      <div className="grid md:grid-cols-2 gap-x-12 gap-y-16 border-t border-white/10 pt-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 border-t border-white/10 pt-12">
         <AnimatePresence mode="popLayout">
           {filteredActivities.length > 0 ? (
             filteredActivities.map((activity, idx) => (
@@ -1692,7 +1933,7 @@ function PracticalSection({ t, weather }: { t: any; weather: any }) {
         <h2 className="text-4xl text-white font-light leading-tight max-w-xl">{t.practicalTitle}</h2>
       </div>
       
-      <div className="grid sm:grid-cols-2 gap-12 border-t border-white/10 pt-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 border-t border-white/10 pt-12">
         {practicalData.map((info, idx) => {
           const Icon = info.icon;
           return (

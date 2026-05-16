@@ -33,6 +33,15 @@ export interface Translations {
   beachesTitle: string;
   activitiesTitle: string;
   naturalPoolsTitle: string;
+  party: string;
+  partyTitle: string;
+  noClubsFound: string;
+  liveMusic: string;
+  clubs: string;
+  festivals: string;
+  underground: string;
+  latin: string;
+  pubs: string;
   agenda: string;
   agendaTitle: string;
   practicalTitle: string;
@@ -65,7 +74,6 @@ export interface Translations {
   eventDate: string;
   all: string;
   luxury: string;
-  party: string;
   traditional: string;
   bohemian: string;
   festival: string;
@@ -127,6 +135,12 @@ export interface Translations {
   foodContent: string;
   abadesAdText: string;
   abadesAdButton: string;
+  amenities: string;
+  sunLoungers: string;
+  umbrellas: string;
+  showers: string;
+  accessibility: string;
+  parking: string;
 }
 
 export const languages: { code: Language; name: string }[] = [
@@ -175,6 +189,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'From golden imported sands to striking natural volcanic shores.',
     activitiesTitle: 'From the ocean depths to the mountain peaks.',
     naturalPoolsTitle: 'Experience the unique sensation of swimming in volcanic rock pools carved by the Atlantic.',
+    party: 'Nightlife',
+    partyTitle: 'The best electronic music clubs and parties in the South.',
+    noClubsFound: 'No clubs found matching your criteria.',
+    liveMusic: 'Live Music',
+    clubs: 'Clubs',
+    festivals: 'Festivals',
+    underground: 'Underground',
+    latin: 'Latin',
+    pubs: 'Pubs',
     agenda: 'Cultural Agenda',
     agendaTitle: 'Local traditions and events from Los Gigantes to El Porís.',
     practicalTitle: 'Everything you need to know before you touch down.',
@@ -207,7 +230,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Event Date',
     all: 'All',
     luxury: 'Luxury',
-    party: 'Party',
     traditional: 'Traditional',
     bohemian: 'Bohemian',
     festival: 'Festival',
@@ -269,6 +291,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Try "Papas Arrugadas" (wrinkly potatoes) with "Mojo" sauce. Seafood is excellent. Tap water is safe to drink but most tourists prefer bottled water due to the high mineral taste.',
     abadesAdText: 'A stunning coastal retreat where the ocean meets your doorstep. Panoramic views and ultimate serenity in Abades.',
     abadesAdButton: 'Book Your Stay',
+    amenities: 'Beach Amenities',
+    sunLoungers: 'Sun Lounger Rental',
+    umbrellas: 'Umbrella Rental',
+    showers: 'Shower Facilities',
+    accessibility: 'Accessibility Features',
+    parking: 'Closest Parking',
   },
   ES: {
     overview: 'Resumen',
@@ -303,6 +331,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Desde arenas doradas importadas hasta impactantes costas volcánicas naturales.',
     activitiesTitle: 'Desde las profundidades del océano hasta las cumbres de las montañas.',
     naturalPoolsTitle: 'Vive la sensación única de nadar en charcos volcánicos esculpidos por el Atlántico.',
+    party: 'Ocio Nocturno',
+    partyTitle: 'Los mejores clubes de música electrónica y fiestas en el Sur.',
+    noClubsFound: 'No se han encontrado locales que coincidan con sus criterios.',
+    liveMusic: 'Música en Vivo',
+    clubs: 'Discotecas',
+    festivals: 'Festivales',
+    underground: 'Underground',
+    latin: 'Latino',
+    pubs: 'Pubs',
     agenda: 'Agenda Cultural',
     agendaTitle: 'Tradiciones y eventos locales desde Los Gigantes hasta El Porís.',
     practicalTitle: 'Todo lo que necesitas saber antes de aterrizar.',
@@ -335,7 +372,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Fecha del Evento',
     all: 'Todo',
     luxury: 'Lujo',
-    party: 'Fiesta',
     traditional: 'Tradicional',
     bohemian: 'Bohemio',
     festival: 'Festival',
@@ -397,6 +433,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Pruebe las "Papas Arrugadas" con salsa "Mojo". El marisco es excelente. El agua del grifo es segura pero la mayoría prefiere agua embotellada por el sabor mineral.',
     abadesAdText: 'Un refugio costero impresionante donde el océano llega a tu puerta. Vistas panorámicas y serenidad total en Abades.',
     abadesAdButton: 'Reserva tu Estancia',
+    amenities: 'Servicios de Playa',
+    sunLoungers: 'Alquiler de Hamacas',
+    umbrellas: 'Alquiler de Sombrillas',
+    showers: 'Duchas',
+    accessibility: 'Accesibilidad',
+    parking: 'Aparcamiento cercano',
   },
   FR: {
     overview: 'Aperçu',
@@ -431,6 +473,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Des sables dorés importés aux rivages volcaniques naturels saisissants.',
     activitiesTitle: 'Des profondeurs de l\'océan aux sommets des montagnes.',
     naturalPoolsTitle: 'Vivez la sensation unique de nager dans des piscines volcaniques sculptées par l\'Atlantique.',
+    party: 'Vie nocturne',
+    partyTitle: 'Les meilleurs clubs de musique électronique et soirées du Sud.',
+    noClubsFound: 'Aucun club trouvé correspondant à vos critères.',
+    liveMusic: 'Musique Live',
+    clubs: 'Clubs',
+    festivals: 'Festivals',
+    underground: 'Underground',
+    latin: 'Latin',
+    pubs: 'Pubs',
     agenda: 'Agenda Culturel',
     agendaTitle: 'Traditions et événements locaux de Los Gigantes à El Porís.',
     practicalTitle: 'Tout ce que vous devez savoir avant d\'atterrir.',
@@ -463,7 +514,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Date de l\'Événement',
     all: 'Tout',
     luxury: 'Luxe',
-    party: 'Fête',
     traditional: 'Traditionnel',
     bohemian: 'Bohème',
     festival: 'Festival',
@@ -525,6 +575,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Essayez les "Papas Arrugadas" (pommes de terre ridées) avec la sauce "Mojo". Les fruits de mer sont excellents. L\'eau du robinet est potable mais l\'eau en bouteille est préférée.',
     abadesAdText: 'Superbe location de vacances à Abades avec vue panoramique sur la mer. Réservez votre séjour serein !',
     abadesAdButton: 'Voir la Propriété',
+    amenities: 'Équipements de Plage',
+    sunLoungers: 'Location de Transats',
+    umbrellas: 'Location de Parasols',
+    showers: 'Douches',
+    accessibility: 'Accessibilité',
+    parking: 'Parking Proche',
   },
   DE: {
     overview: 'Übersicht',
@@ -559,6 +615,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Von importiertem goldenen Sand bis hin zu markanten natürlichen Vulkanstränden.',
     activitiesTitle: 'Von den Tiefen des Ozeans bis zu den Gipfeln der Berge.',
     naturalPoolsTitle: 'Erleben Sie das einzigartige Gefühl, in vulkanischen Felsenbecken zu schwimmen, die vom Atlantik geformt wurden.',
+    party: 'Nachtleben',
+    partyTitle: 'Die besten Elektro-Clubs und Partys im Süden.',
+    noClubsFound: 'Keine Clubs gefunden, die Ihren Kriterien entsprechen.',
+    liveMusic: 'Live-Musik',
+    clubs: 'Clubs',
+    festivals: 'Festivals',
+    underground: 'Underground',
+    latin: 'Latin',
+    pubs: 'Pubs',
     agenda: 'Kulturkalender',
     agendaTitle: 'Lokale Traditionen und Veranstaltungen von Los Gigantes bis El Porís.',
     practicalTitle: 'Alles, was Sie wissen müssen, bevor Sie landen.',
@@ -591,7 +656,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Veranstaltungsdatum',
     all: 'Alle',
     luxury: 'Luxus',
-    party: 'Party',
     traditional: 'Traditionell',
     bohemian: 'Boho',
     festival: 'Festival',
@@ -653,6 +717,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Probieren Sie "Papas Arrugadas" (Schrumpelkartoffeln) mit "Mojo"-Sauce. Meeresfrüchte sind exzellent. Leitungswasser ist trinkbar, wird aber oft wegen des Mineralgeschmacks gemieden.',
     abadesAdText: 'Atemberaubendes Ferienhaus in Abades mit Panorama-Meerblick. Buche jetzt deinen entspannten Urlaub!',
     abadesAdButton: 'Unterkunft Ansehen',
+    amenities: 'Strandausstattung',
+    sunLoungers: 'Sonnenliegen-Verleih',
+    umbrellas: 'Sonnenschirm-Verleih',
+    showers: 'Duscheinrichtungen',
+    accessibility: 'Barrierefreiheit',
+    parking: 'Nächster Parkplatz',
   },
   NL: {
     overview: 'Overzicht',
@@ -687,6 +757,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Van geïmporteerd goudkleurig zand tot opvallende natuurlijke vulkanische kusten.',
     activitiesTitle: 'Van de diepte van de oceaan tot de toppen van de bergen.',
     naturalPoolsTitle: 'Ervaar de unieke sensatie van zwemmen in vulkanische rotsbaden die door de Atlantische Oceaan zijn uitgesleten.',
+    party: 'Nachtleven',
+    partyTitle: 'De beste elektronische muziekclubs en feesten in het zuiden.',
+    noClubsFound: 'Geen clubs gevonden die aan uw criteria voldoen.',
+    liveMusic: 'Live Muziek',
+    clubs: 'Clubs',
+    festivals: 'Festivals',
+    underground: 'Underground',
+    latin: 'Latijns',
+    pubs: 'Pubs',
     agenda: 'Culturele Agenda',
     agendaTitle: 'Lokale tradities en evenementen van Los Gigantes tot El Porís.',
     practicalTitle: 'Alles wat je moet weten voordat je landt.',
@@ -719,7 +798,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Evenementdatum',
     all: 'Alle',
     luxury: 'Luxe',
-    party: 'Feest',
     traditional: 'Traditioneel',
     bohemian: 'Boheems',
     festival: 'Festival',
@@ -781,6 +859,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Probeer "Papas Arrugadas" met "Mojo" saus. De zeevruchten zijn uitstekend. Kraanwater is veilig om te drinken, maar de meeste toeristen verkiezen flessenwater.',
     abadesAdText: 'Prachtige vakantiewoning in Abades met panoramisch uitzicht op zee. Boek nu je rustige uitje!',
     abadesAdButton: 'Bekijk Accommodatie',
+    amenities: 'Strandvoorzieningen',
+    sunLoungers: 'Ligbedverhuur',
+    umbrellas: 'Parasolverhuur',
+    showers: 'Douchefaciliteiten',
+    accessibility: 'Toegankelijkheid',
+    parking: 'Dichtstbijzijnde Parkeergelegenheid',
   },
   IT: {
     overview: 'Panoramica',
@@ -815,6 +899,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Dalle sabbie dorate importate alle spettacolari coste vulcaniche naturali.',
     activitiesTitle: 'Dalle profondità dell\'oceano alle vette delle montagne.',
     naturalPoolsTitle: 'Vivi la sensazione unica di nuotare in piscine di roccia vulcanica scolpite dall\'Atlantico.',
+    party: 'Vita notturna',
+    partyTitle: 'I migliori club di musica elettronica e feste del Sud.',
+    noClubsFound: 'Nessun club trovato corrispondente ai tuoi criteri.',
+    liveMusic: 'Musica dal Vivo',
+    clubs: 'Club',
+    festivals: 'Festival',
+    underground: 'Underground',
+    latin: 'Latino',
+    pubs: 'Pub',
     agenda: 'Agenda Culturale',
     agendaTitle: 'Tradizioni ed eventi locali da Los Gigantes a El Porís.',
     practicalTitle: 'Tutto ciò che devi sapere prima di atterrare.',
@@ -847,7 +940,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Data dell\'Evento',
     all: 'Tutti',
     luxury: 'Lusso',
-    party: 'Festa',
     traditional: 'Tradizionale',
     bohemian: 'Bohémien',
     festival: 'Festival',
@@ -909,6 +1001,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Prova le "Papas Arrugadas" con salsa "Mojo". I frutti di mare sono eccellenti. L\'acqua del rubinetto è potabile ma si preferisce l\'acqua in bottiglia.',
     abadesAdText: 'Splendida casa vacanze ad Abades con vista panoramica sul mare. Prenota ora la tua fuga serena!',
     abadesAdButton: 'Vedi Proprietà',
+    amenities: 'Servizi in Spiaggia',
+    sunLoungers: 'Noleggio Lettini',
+    umbrellas: 'Noleggio Ombrelloni',
+    showers: 'Docce',
+    accessibility: 'Accessibilità',
+    parking: 'Parcheggio Vicino',
   },
   PT: {
     overview: 'Visão Geral',
@@ -943,6 +1041,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Desde areias douradas importadas até costas vulcânicas naturais impressionantes.',
     activitiesTitle: 'Das profundezas do oceano aos picos das montanhas.',
     naturalPoolsTitle: 'Experimente a sensação única de nadar em piscinas de rocha vulcânica esculpidas pelo Atlântico.',
+    party: 'Vida noturna',
+    partyTitle: 'Os melhores clubes de música eletrónica e festas do Sul.',
+    noClubsFound: 'Nenhum clube encontrado que corresponda aos seus critérios.',
+    liveMusic: 'Música ao Vivo',
+    clubs: 'Clubes',
+    festivals: 'Festivais',
+    underground: 'Underground',
+    latin: 'Latino',
+    pubs: 'Pubs',
     agenda: 'Agenda Cultural',
     agendaTitle: 'Tradições e eventos locais de Los Gigantes a El Porís.',
     practicalTitle: 'Tudo o que precisa de saber antes de aterrar.',
@@ -975,7 +1082,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Data do Evento',
     all: 'Tudo',
     luxury: 'Luxo',
-    party: 'Festa',
     traditional: 'Tradicional',
     bohemian: 'Boémio',
     festival: 'Festival',
@@ -1037,6 +1143,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Prove as "Papas Arrugadas" com molho "Mojo". O marisco é excelente. A água da torneira é segura para beber, mas a maioria prefere água engarrafada pelo sabor mineral.',
     abadesAdText: 'Incrível aluguer de férias em Abades com vistas panorâmicas sobre o mar. Reserve já o seu refúgio!',
     abadesAdButton: 'Ver Propriedade',
+    amenities: 'Serviços de Praia',
+    sunLoungers: 'Aluguer de Espreguiçadeiras',
+    umbrellas: 'Aluguer de Sombrinhas',
+    showers: 'Duches',
+    accessibility: 'Acessibilidade',
+    parking: 'Estacionamento Próximo',
   },
   PL: {
     overview: 'Przegląd',
@@ -1071,6 +1183,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Od złotych, importowanych piasków po uderzające naturalne wulkaniczne brzegi.',
     activitiesTitle: 'Od morskich głębin po górskie szczyty.',
     naturalPoolsTitle: 'Doświadcz wyjątkowego uczucia pływania w wulkanicznych basenach skalnych wyrzeźbionych przez Atlantyk.',
+    party: 'Życie nocne',
+    partyTitle: 'Najlepsze kluby z muzyką elektroniczną i imprezy na południu.',
+    noClubsFound: 'Nie znaleziono klubów spełniających Twoje kryteria.',
+    liveMusic: 'Muzyka na Żywo',
+    clubs: 'Kluby',
+    festivals: 'Festiwale',
+    underground: 'Underground',
+    latin: 'Latynoska',
+    pubs: 'Puby',
     agenda: 'Kalendarz Kulturalny',
     agendaTitle: 'Lokalne tradycje i wydarzenia od Los Gigantes do El Porís.',
     practicalTitle: 'Wszystko, co musisz wiedzieć przed przylotem.',
@@ -1103,7 +1224,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Data Wydarzenia',
     all: 'Wszystkie',
     luxury: 'Luksus',
-    party: 'Impreza',
     traditional: 'Tradycyjne',
     bohemian: 'Bohema',
     festival: 'Festiwal',
@@ -1165,6 +1285,12 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Spróbuj "Papas Arrugadas" z sosem "Mojo". Owoce morza są wyśmienite. Woda z kranu jest zdatna do picia, ale większość turystów woli wodę butelkowaną.',
     abadesAdText: 'Niesamowity wynajem wakacyjny w Abades z panoramicznym widokiem na morze. Zarezerwuj swój spokój już teraz!',
     abadesAdButton: 'Zobacz Obiekt',
+    amenities: 'Udogodnienia na Plaży',
+    sunLoungers: 'Wynajem Leżaków',
+    umbrellas: 'Wynajem Parasoli',
+    showers: 'Prysznice',
+    accessibility: 'Udogodnienia dla Niepełnosprawnych',
+    parking: 'Najbliższy Parking',
   },
   UK: {
     overview: 'Огляд',
@@ -1199,6 +1325,15 @@ export const i18n: Record<Language, Translations> = {
     beachesTitle: 'Від золотистого імпортного піску до вражаючих природних вулканічних берегів.',
     activitiesTitle: 'Від глибин океану до гірських вершин.',
     naturalPoolsTitle: 'Відчуйте унікальні враження від купання у вулканічних басейнах, висічених Атлантикою.',
+    party: 'Нічне життя',
+    partyTitle: 'Найкращі клуби електронної музики та вечірки на півдні.',
+    noClubsFound: 'Клубів не знайдено.',
+    liveMusic: 'Жива музика',
+    clubs: 'Клуби',
+    festivals: 'Фестивалі',
+    underground: 'Андеграунд',
+    latin: 'Латино',
+    pubs: 'Паби',
     agenda: 'Культурна Програма',
     agendaTitle: 'Місцеві традиції та заходи від Лос-Гігантес до Ель-Поріс.',
     practicalTitle: 'Все, що вам потрібно знати перед приземленням.',
@@ -1231,7 +1366,6 @@ export const i18n: Record<Language, Translations> = {
     eventDate: 'Дата Події',
     all: 'Всі',
     luxury: 'Розкіш',
-    party: 'Вечірка',
     traditional: 'Традиційні',
     bohemian: 'Богемні',
     festival: 'Фестиваль',
@@ -1293,5 +1427,11 @@ export const i18n: Record<Language, Translations> = {
     foodContent: 'Спробуйте "Papas Arrugadas" (зморшкувату картоплю) з соусом "Mojo". Морепродукти тут чудові. Водопровідна вода безпечна, але більшість віддає перевагу бутильованій.',
     abadesAdText: 'Приголомшливе житло для відпочинку в Абадесі з панорамним видом на море. Забронюйте свій незабутній відпочинок вже зараз!',
     abadesAdButton: 'Переглянути',
+    amenities: 'Зручності на пляжі',
+    sunLoungers: 'Оренда шезлонгів',
+    umbrellas: 'Оренда парасольок',
+    showers: 'Душові кабіни',
+    accessibility: 'Доступність',
+    parking: 'Найближча парковка',
   },
 };

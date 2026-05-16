@@ -1,4 +1,4 @@
-import { Map, MapPin, Sun, Umbrella, Camera, Info, Bus, Plane, Utensils, Waves, Calendar } from "lucide-react";
+import { Map, MapPin, Sun, Umbrella, Camera, Info, Bus, Plane, Utensils, Waves, Calendar, Music } from "lucide-react";
 
 export const categories = [
   { id: "overview", label: "Overview", icon: Info },
@@ -7,8 +7,376 @@ export const categories = [
   { id: "naturalPools", label: "Natural Pools", icon: Waves },
   { id: "activities", label: "Activities", icon: Camera },
   { id: "localEats", label: "Eat Like a Local", icon: Utensils },
+  { id: "party", label: "Nightlife & Parties", icon: Music },
   { id: "agenda", label: "Cultural Agenda", icon: Calendar },
   { id: "practical", label: "Practical Info", icon: Map },
+];
+
+export interface Club {
+  id: string;
+  name: string;
+  location: string;
+  type: string;
+  description: string;
+  detailedDescription: string;
+  image: string;
+  highlights: string[];
+  vibe: string;
+  musicType: string[];
+  rating: number;
+  address?: string;
+  website?: string;
+  lat: number;
+  lng: number;
+  regularEvents?: { day: string, name: string }[];
+}
+
+export const nightlifeClubs: Club[] = [
+  {
+    id: "papagayo-beach-club",
+    name: "Papagayo Beach Club",
+    location: "Playa de las Américas",
+    type: "Beach Club / Nightclub",
+    description: "The most iconic beach club in Tenerife, where luxury meets world-class electronic music.",
+    detailedDescription: "Papagayo is a multi-level architectural landmark right on the coast. During the day, it's a sophisticated spot for cocktails and Balinese beds. As the sun sets, it transforms into a high-energy nightclub hosting international house and techno DJs. Its open-air design ensures the Atlantic breeze keeps the party cool.",
+    image: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Frontline Beach Views", "International DJ Headliners", "Luxury VIP areas"],
+    vibe: "Elegant / Wild / High-End",
+    musicType: ["House", "Techno", "Deep House"],
+    rating: 4.8,
+    address: "Av. Rafael Puig Lluvina, 2, 38660 Playa de las Américas",
+    website: "https://papagayobeachclub.es",
+    lat: 28.0617,
+    lng: -16.7333,
+    regularEvents: [
+      { day: "Friday", name: "Papagayo House Project" },
+      { day: "Sunday", name: "The Sunset Ritual" }
+    ]
+  },
+  {
+    id: "tramps-tenerife",
+    name: "Tramps Tenerife",
+    location: "Starco, Las Américas",
+    type: "Nightclub",
+    description: "The 'King of Clubs' in Tenerife, famous for its massive main room and R&B terrace.",
+    detailedDescription: "Tramps has been a fixture of Tenerife nightlife for decades. Located in the famous Starco area, it features multiple rooms catering to different tastes. Whether you want pure chart hits, old-school house, or smooth R&B on the terrace, Tramps provides an authentic nightclub experience with top-tier sound systems.",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Multiple Music Rooms", "Famous R&B Terrace", "Student Friendly"],
+    vibe: "Classic Nightclub / Energetic",
+    musicType: ["House", "R&B", "Chart", "Techno"],
+    rating: 4.5,
+    address: "C.C. Starco, Las Américas, 38660 Arona",
+    website: "https://trampstenerife.com",
+    lat: 28.0622,
+    lng: -16.7306
+  },
+  {
+    id: "monkey-beach-club",
+    name: "Monkey Beach Club",
+    location: "Playa La Troya",
+    type: "Beach Club",
+    description: "Traditional beach club recently renovated into a stunning modern party venue.",
+    detailedDescription: "Overlooking Playa La Troya, Monkey Beach Club is legendary for its 'Afternoon Parties'. Recently renovated with a tropical-glam aesthetic, it offers incredible views of La Gomera. It's the place to be on Saturday afternoons when local and guest DJs play tropical house as the sun sets.",
+    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Epic Sunset View", "Tropical House Vibe", "Renovated Terrace"],
+    vibe: "Tropical / Chic / Social",
+    musicType: ["Tropical House", "Latin", "Deep House"],
+    rating: 4.6,
+    address: "C.C. Sol, Local 4, Av. Rafael Puig Lluvina, 38660 Adeje",
+    website: "https://monkeybeachclub.com",
+    lat: 28.0644,
+    lng: -16.7344
+  },
+  {
+    id: "achaman-discopub",
+    name: "Achaman Discopub",
+    location: "Costa Adeje",
+    type: "Latin / Local Club",
+    description: "The heart of Latin music in the south. Where the locals go to dance Salsa and Reggaeton.",
+    detailedDescription: "Achaman is where you'll find the true spirit of Canarian nightlife. While other clubs focus on international tourists, Achaman is the local favorite for Reggaeton, Salsa, and Merengue. It features a large open-air terrace and a cavernous interior where dancing is taken very seriously.",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Authentic Local Atmosphere", "Open-air Terrace", "Best Reggaeton"],
+    vibe: "Latin / Intense / Friendly",
+    musicType: ["Reggaeton", "Salsa", "Bachata"],
+    rating: 4.4,
+    address: "C. de Bruselas, 38660 Adeje",
+    lat: 28.0867,
+    lng: -16.7358
+  },
+  {
+    id: "magic-lounge-club",
+    name: "Magic Lounge Club",
+    location: "Safari Centre, Las Américas",
+    type: "Lounge / Nightclub",
+    description: "Sophisticated nightlife in the heart of the Golden Mile.",
+    detailedDescription: "Magic offers a more mature and sophisticated alternative to the high-intensity clubs. Located in the luxury Safari Centre, its decor is opulent and its cocktail menu extensive. Perfect for those who want to start with a drink on the terrace and end up dancing to soulful house music.",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Golden Mile Location", "Premium Cocktails", "Sophisticated Decor"],
+    vibe: "Posh / Chill-out / Soulful",
+    musicType: ["Soulful House", "Nu-Disco", "Commercial"],
+    rating: 4.7,
+    address: "C.C. Safari, Av. de las Américas, 38660 Arona",
+    website: "https://magic-tenerife.com",
+    lat: 28.0567,
+    lng: -16.7317
+  },
+  {
+    id: "tibu-tenerife",
+    name: "Tibu Tenerife",
+    location: "Playa de las Américas",
+    type: "Mainstream Nightclub",
+    description: "Massive venue famous for its light shows and glamorous dancers.",
+    detailedDescription: "Tibu is all about the spectacle. With high-tech CO2 cannons, professional dancers on stage, and a top-of-the-line sound system, it's a sensory overload. It's the destination for those wanting the 'big room' experience with commercial hits and high energy.",
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Stage Shows", "Dancer Performances", "Large Dancefloor"],
+    vibe: "High Energy / Glamorous",
+    musicType: ["Mainstream House", "Commercial", "R&B"],
+    rating: 4.3,
+    address: "Av. Rafael Puig Lluvina, 7, 38660 Playa de las Américas",
+    lat: 28.0619,
+    lng: -16.7328
+  },
+  {
+    id: "hard-rock-cafe-tenerife",
+    name: "Hard Rock Cafe Tenerife",
+    location: "Las Américas (Golden Mile)",
+    type: "Live Music / Cafe",
+    description: "The world-famous rock 'n' roll experience with regular live band performances.",
+    detailedDescription: "Located prominently on the Golden Mile, Hard Rock Cafe Tenerife is one of the largest in Europe. It features a stunning rooftop terrace and a main stage that hosts live local and international tribute bands almost every night. It's as much a museum of rock history as it is a music venue.",
+    image: "https://images.unsplash.com/photo-1514525253361-bee8718a300a?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Rock Memorabilia", "Rooftop Terrace", "Nightly Live Bands"],
+    vibe: "Iconic / Energetic / Universal",
+    musicType: ["Rock", "Pop", "Live Bands"],
+    rating: 4.6,
+    address: "Av. de las Américas, S/N, 38660 Arona",
+    website: "https://www.hardrockcafe.com/location/tenerife/",
+    lat: 28.0561,
+    lng: -16.7314
+  },
+  {
+    id: "detroit-city-bar",
+    name: "Detroit City Bar",
+    location: "Playa de las Américas",
+    type: "Rock Bar / Live Music",
+    description: "The home of rock and roll in the South. Grit, soul, and loud guitars.",
+    detailedDescription: "Detroit City Bar is a legendary spot for those who prefer their music with a bit of edge. Known for its dark, atmospheric interior and a dedicated stage for rock and blues bands, it offers an authentic alternative to the polished beach clubs nearby.",
+    image: "https://images.unsplash.com/photo-1510672981848-a1c4f1cb58f4?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Authentic Rock Vibe", "Cold Beer", "Local Band Stage"],
+    vibe: "Underground / Gritty / Soulful",
+    musicType: ["Rock", "Blues", "Alternative"],
+    rating: 4.7,
+    address: "C.C. San Telmo, Playa de las Américas, 38660 Adeje",
+    lat: 28.0610,
+    lng: -16.7310
+  },
+  {
+    id: "sax-bar-tenerife",
+    name: "Sax Bar",
+    location: "Costa Adeje",
+    type: "Live Music Venue",
+    description: "A class act in Costa Adeje, famous for its high-quality live music and professional musicians.",
+    detailedDescription: "Sax Bar is where you go for a great night of musicianship. From incredible saxophonists to full rock ensembles, the quality of performers here is top-notch. It has a slightly more mature but very lively crowd that appreciates real instruments and great vocals.",
+    image: "https://images.unsplash.com/photo-1549421263-549421263549?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Pro Musicians", "Great Cocktails", "Sophisticated Atmosphere"],
+    vibe: "Lively / Professional / Classic",
+    musicType: ["Rock", "Soul", "Blues", "Jazz"],
+    rating: 4.8,
+    address: "Av. de España, 38660 Costa Adeje",
+    lat: 28.0789,
+    lng: -16.7322
+  },
+  {
+    id: "mustang-sallys",
+    name: "Mustang Sally's",
+    location: "Playa de las Américas",
+    type: "Entertainment Bar",
+    description: "High-energy entertainment, live singing, and a party that never stops.",
+    detailedDescription: "Mustang Sally's is an institution for fun. It's not just about the music; it's about the show. Expect live singers who engage the whole crowd, karaoke sessions that turn into full-on concerts, and a staff that keeps the energy at 100% all night long.",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Interactive Shows", "Group Singing", "High Energy"],
+    vibe: "Fun / Inclusive / Loud",
+    musicType: ["Party Hits", "Pop", "Commercial"],
+    rating: 4.5,
+    address: "C.C. Salytien, Playa de las Américas, 38660 Adeje",
+    lat: 28.0655,
+    lng: -16.7325
+  },
+  {
+    id: "the-dubliner-tenerife",
+    name: "The Dubliner",
+    location: "Las Américas",
+    type: "Irish Pub / Live Music",
+    description: "A genuine Irish pub atmosphere with live bands every night and a roaring crowd.",
+    detailedDescription: "The Dubliner is where the craic is. One of the busiest spots in Las Américas, it features live acoustic acts and bands performing everything from Irish folk to classic rock. It's famous for its atmosphere where strangers become friends by the end of the first pint.",
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Authentic Pub feel", "Guinness on Tap", "Crowd Singalongs"],
+    vibe: "Friendly / Traditional / Boisterous",
+    musicType: ["Irish Folk", "Rock", "Acoustic"],
+    rating: 4.7,
+    address: "Av. Rafael Puig Lluvina, 38660 Playa de las Américas, Arona",
+    lat: 28.0620,
+    lng: -16.7305
+  },
+  {
+    id: "manfreds-soul-cafe",
+    name: "Manfred's Soul Cafe",
+    location: "El Médano",
+    type: "Cocktail Bar / Live Music",
+    description: "The soul of El Médano. Beachfront cocktails with regular live Jazz, Soul, and Funk sessions.",
+    detailedDescription: "Manfred's is an institution in El Médano. Located right on the promenade overlooking the ocean, it's famous for its creative cocktails and its commitment to quality music. Whether it's a sunset soul session or a late-night jazz trio, the vibe here is always sophisticated yet relaxed.",
+    image: "https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Oceanfront Views", "Signature Cocktails", "Soulful Live Sessions"],
+    vibe: "Bohemian / Sophisticated / Chill",
+    musicType: ["Soul", "Jazz", "Funk", "Acoustic"],
+    rating: 4.8,
+    address: "Paseo Marítimo, 38612 El Médano",
+    lat: 28.0443,
+    lng: -16.5362
+  },
+  {
+    id: "flashpoint-el-medano",
+    name: "Flashpoint",
+    location: "El Médano",
+    type: "Surf Bar / Beach Pub",
+    description: "The legendary meeting point for the international surf and windsurf community.",
+    detailedDescription: "Flashpoint is more than a bar; it's the heart of the surf scene in the south. With its wooden deck extending toward the sand, it's the perfect spot to watch the windsurfers while enjoying a cold beer. On weekends, it often hosts local rock bands or DJs that keep the party going under the stars.",
+    image: "https://images.unsplash.com/photo-1577998474517-7eeeed4e448a?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Surf Community Hub", "Outdoor Deck", "Live Rock & DJs"],
+    vibe: "Surf Vibe / Casual / High Energy",
+    musicType: ["Rock", "Alternative", "Surf Music"],
+    rating: 4.6,
+    address: "Playa del Médano, 38612 Granadilla de Abona",
+    lat: 28.0441,
+    lng: -16.5361
+  },
+  {
+    id: "chirinstone-la-caleta",
+    name: "Chirinstone",
+    location: "La Caleta / La Enramada",
+    type: "Alternative Beach Bar",
+    description: "A magical sunset spot with an alternative spirit and incredible live music on the beach.",
+    detailedDescription: "Tucked away on the pebbles of La Enramada beach, Chirinstone is a local favorite. It's built into the rocks and offers a raw, authentic experience compared to the polished bars of Adeje. It's famous for its sunset live music where everyone gathers to applaud the sun as it dips below the horizon.",
+    image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Sunset Rituals", "Beach Atmosphere", "Alternative Live Bands"],
+    vibe: "Hippie-Chic / Raw / Magical",
+    musicType: ["Reggae", "Acoustic", "Rock", "World Music"],
+    rating: 4.9,
+    address: "Playa de la Enramada, 38679 Costa Adeje",
+    lat: 28.1026,
+    lng: -16.7508
+  },
+  {
+    id: "jeip-medano",
+    name: "Jeip",
+    location: "El Médano",
+    type: "Music Pub / Tapas Bar",
+    description: "Lively pub on the main plaza, famous for its great atmosphere and frequent live music.",
+    detailedDescription: "Jeip is the center of the action in El Médano's plaza. It transitions perfectly from a morning coffee spot to a high-energy music pub at night. They host a variety of live acts throughout the week, ranging from acoustic duos to full-blown party bands.",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Main Plaza Location", "Friendly Staff", "Regular Live Music"],
+    vibe: "Lively / Local / Social",
+    musicType: ["Pop", "Rock", "Commercial"],
+    rating: 4.5,
+    address: "Plaza de El Médano, 38612 Granadilla de Abona",
+    lat: 28.0458,
+    lng: -16.5363
+  },
+  {
+    id: "bar-coqueluche",
+    name: "Bar Coqueluche",
+    location: "Costa Adeje / Los Cristianos",
+    type: "Beach Bar / Live Music",
+    description: "Stylish beachfront spot known for its afternoon live music sessions and chic vibe.",
+    detailedDescription: "Coqueluche offers a more relaxed and stylish alternative to the loud clubs. Located right on the coast between the big resorts, its wooden decor and proximity to the waves create a peaceful but festive environment. Their weekend live music sessions attract a loyal crowd of locals and regulars.",
+    image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Wavefront Seating", "Live Afternoon Music", "Chic Decor"],
+    vibe: "Chic / Relaxed / Festive",
+    musicType: ["Smooth House", "Live Acoustic", "Soul"],
+    rating: 4.7,
+    address: "Paseo Marítimo, 38660 Costa Adeje",
+    lat: 28.1035,
+    lng: -16.7495
+  },
+  {
+    id: "bar-plaza-alcala",
+    name: "Bar Plaza Alcalá",
+    location: "Alcalá",
+    type: "Village Bar / Live Music",
+    description: "The heart of Alcalá village life. Traditional atmosphere with live music on weekends.",
+    detailedDescription: "Bar Plaza is the quintessence of a Canarian village bar. Located right on the main square of Alcalá, it's where locals gather to talk, play cards, and enjoy live music. On Friday and Saturday nights, it often hosts local bands performing everything from rock to traditional folklore, creating a warm, inclusive party vibe.",
+    image: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Square-side Seating", "Authentic Local Vibe", "Weekend Live Bands"],
+    vibe: "Traditional / Warm / Community",
+    musicType: ["Rock", "Folklore", "Pop"],
+    rating: 4.5,
+    address: "Plaza del Llano, 38686 Alcalá",
+    lat: 28.2005,
+    lng: -16.8320
+  },
+  {
+    id: "chiringuito-pirata",
+    name: "Chiringuito Pirata",
+    location: "La Tejita / El Médano",
+    type: "Beach Bar / Pub",
+    description: "The most famous 'chiringuito' in the south. Pure beach vibes and legendary sunset sessions.",
+    detailedDescription: "Located at the end of La Tejita beach facing the Red Mountain, 'The Pirate' is a legend. It's a simple wooden shack with no electricity (using generators), serving cold beer and great food. It's the ultimate spot for an afternoon party as the sun sets over the ocean, often accompanied by acoustic musicians or chill-out DJs.",
+    image: "https://images.unsplash.com/photo-1499596395995-17d4a20bde15?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Off-grid Vibe", "Sunset Views", "Legendary Status"],
+    vibe: "Rustic / Wild / Free",
+    musicType: ["Chill-out", "Reggae", "Acoustic"],
+    rating: 4.8,
+    address: "Playa de la Tejita, 38612 El Médano",
+    lat: 28.0305,
+    lng: -16.5580
+  },
+  {
+    id: "the-ginger-pig-los-gigantes",
+    name: "The Ginger Pig",
+    location: "Los Gigantes",
+    type: "Gastro Pub / Music",
+    description: "Cozy gastro pub known for its quality food and charming live acoustic nights.",
+    detailedDescription: "The Ginger Pig is a favorite in the Los Gigantes area. While primarily known for its excellent food, it transforms into a cozy music venue on several nights a week. It features high-quality acoustic acts in an intimate setting, perfect for those who want a more relaxed evening with great tunes.",
+    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Gastro Pub Food", "Intimate Acoustic Music", "Friendly Neighborhood Vibe"],
+    vibe: "Cozy / Friendly / High Quality",
+    musicType: ["Acoustic", "Folk", "Soft Rock"],
+    rating: 4.8,
+    address: "C. Jose Maria Galván Bello, 38683 Puerto de Santiago",
+    lat: 28.2361,
+    lng: -16.8411
+  },
+  {
+    id: "st-eugenes-adeje",
+    name: "St. Eugene's",
+    location: "Costa Adeje",
+    type: "Music Bar / Entertainment",
+    description: "Classic entertainment venue offering live bands, cabaret, and a traditional pub atmosphere.",
+    detailedDescription: "St. Eugene's is one of the most consistent venues in Costa Adeje for night-after-night entertainment. With a large stage and a dedicated following, it hosts a variety of acts ranging from rock tribute bands to professional vocalists. It's the place to go if you want a guaranteed night of live entertainment and a cheering crowd.",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Nightly Entertainment", "Large Stage", "Professional Acts"],
+    vibe: "Traditional / Boisterous / Fun",
+    musicType: ["Rock", "Pop", "Cabaret"],
+    rating: 4.6,
+    address: "C. de Islandia, 38660 Adeje",
+    lat: 28.0817,
+    lng: -16.7344
+  },
+  {
+    id: "brahms-and-liszt-americas",
+    name: "Brahms and Liszt",
+    location: "Playa de las Américas",
+    type: "Cabaret Bar / Show Venue",
+    description: "Iconic showbar famous for its hilarious cabaret and professional musical performances.",
+    detailedDescription: "Brahms and Liszt has been entertaining Las Américas for years. Known for its high-energy shows and comedic flair, it's a unique spot on the strip. While it leans toward cabaret and comedy, the musical talent of the performers is undeniable, making it a staple of the local nightlife scene.",
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Cabaret Shows", "High-energy Performance", "Iconic Venue"],
+    vibe: "Funny / Energetic / Showy",
+    musicType: ["Musical", "Pop Hits", "Showtunes"],
+    rating: 4.5,
+    address: "C.C. Starco, Playa de las Américas, 38660 Arona",
+    lat: 28.0625,
+    lng: -16.7303
+  }
 ];
 
 export interface Event {
@@ -851,6 +1219,57 @@ export const culturalEvents: Event[] = [
     highlights: ["Pier-side Bonfires", "Local Music Bands", "Solstice Rituals"],
     price: "Free",
     address: "Muelle de Playa de San Juan, 38687 Guía de Isora"
+  },
+  {
+    id: "children-80s-2026",
+    name: "Children of the 80's",
+    date: "Monthly 2026",
+    dateStart: "2026-06-13",
+    location: "Hard Rock Hotel Tenerife",
+    type: "Party / Retro",
+    description: "The most famous retro party in Tenerife. Neon, spandex, and 80s hits.",
+    detailedDescription: "Hard Rock Hotel's lagoon stage becomes a playground for 80s and 90s nostalgia. Every month, thousands gather in neon costumes for a night of classic pop and house. It's the south's biggest outdoor recurring party.",
+    officialLink: "https://www.hardrockhoteltenerife.com",
+    image: "https://images.unsplash.com/photo-1514525253361-bee8718a300a?auto=format&fit=crop&q=80&w=800",
+    lat: 28.1189,
+    lng: -16.7828,
+    highlights: ["Outdoor Lagoon Stage", "Fancy Dress highly encouraged", "Classic Pop/Dance"],
+    price: "From €30",
+    address: "Av. Adeje 300, S/N, 38678 Adeje"
+  },
+  {
+    id: "greenworld-2026",
+    name: "GreenWorld Festival 2026",
+    date: "Easter & Summer 2026",
+    dateStart: "2026-04-04",
+    location: "Amarilla Golf",
+    type: "Electronic / Festival",
+    description: "Pure Underground Techno and House in the middle of a golf course.",
+    detailedDescription: "GreenWorld has established itself as the premier underground electronic music event in the south. Taking place in a unique cleared area of Amarilla Golf, it focuses purely on high-quality techno and tech-house without the commercial fluff.",
+    officialLink: "https://greenworldfestival.com",
+    image: "https://images.unsplash.com/photo-1510672981848-a1c4f1cb58f4?auto=format&fit=crop&q=80&w=800",
+    lat: 28.0167,
+    lng: -16.6167,
+    highlights: ["Underground Techno Lineup", "Natural Environment", "Custom Sound Design"],
+    price: "Tickets from €45",
+    address: "Amarilla Golf, 38639 San Miguel de Abona"
+  },
+  {
+    id: "ritmos-mundo-2026",
+    name: "Ritmos del Mundo 2026",
+    date: "June 2026",
+    dateStart: "2026-06-20",
+    location: "Siam Park / Golf Costa Adeje",
+    type: "Festival / Party",
+    description: "A summer tradition bringing top urban and electronic stars to the Adeje sunshine.",
+    detailedDescription: "Ritmos del Mundo is a landmark in the Tenerife summer. Often coinciding with the summer solstice, it's a celebration and multi-genre event that leans toward the younger, high-energy crowd.",
+    officialLink: "https://ritmosdelmundo.com",
+    image: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&q=80&w=800",
+    lat: 28.0900,
+    lng: -16.7400,
+    highlights: ["Oceanfront Background", "Multiple Genres", "Sunset Finale"],
+    price: "Tickets from €55",
+    address: "Avenida de los Pueblos, s/n, 38660 Adeje"
   }
 ];
 
@@ -1269,7 +1688,37 @@ export const destinationsList = [
   }
 ];
 
-export const beaches = [
+export interface BeachAmenities {
+  sunLoungers: string;
+  umbrellas: string;
+  showers: string;
+  accessibility: string[];
+  parking: string;
+}
+
+export interface Beach {
+  name: string;
+  location: string;
+  description: string;
+  detailedDescription: string;
+  type: string;
+  rating?: number;
+  bestTime: string;
+  suitability: string;
+  whatToBring: string[];
+  nearbyRecommendations: string[];
+  travelTips: string[];
+  howToGetThere: string;
+  safetyTips: string;
+  image: string;
+  lat: number;
+  lng: number;
+  address: string;
+  website?: string;
+  amenities?: BeachAmenities;
+}
+
+export const beaches: Beach[] = [
   {
     name: "Playa del Duque",
     location: "Costa Adeje",
@@ -1287,8 +1736,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
     lat: 28.0906,
     lng: -16.7441,
-    address: "Calle Javier de la Rosa, 38679 Costa Adeje",
-    website: "https://www.visitcostaadeje.com"
+    address: "Urbanización Playa del Duque, 38679 Costa Adeje",
+    website: "https://www.visitcostaadeje.com",
+    amenities: {
+      sunLoungers: "Premium padded sun loungers (Approx. €10-15)",
+      umbrellas: "Elegant striped beach umbrellas (Approx. €10-15)",
+      showers: "Modern shower facilities available (Paid, small fee)",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers", "Reserved disabled parking"],
+      parking: "Large underground paid parking lot nearby (Plaza del Duque)"
+    }
   },
   {
     name: "Playa de las Vistas",
@@ -1307,8 +1763,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1520113412548-5256e5df4698?auto=format&fit=crop&q=80&w=800",
     lat: 28.0519,
     lng: -16.7214,
-    address: "Avenida de Estocolmo, s/n, 38650 Los Cristianos",
-    website: "https://www.arona.org"
+    address: "Paseo Las Vistas, 38650 Los Cristianos",
+    website: "https://www.arona.org",
+    amenities: {
+      sunLoungers: "Standard blue sun loungers (Approx. €6-8)",
+      umbrellas: "Beach umbrellas available for rent (Approx. €6-8)",
+      showers: "Multiple free open-air showers",
+      accessibility: ["Dedicated area for reduced mobility", "Water wheelchairs available", "Concrete ramps to the shore", "Accessible showers available"],
+      parking: "Public street parking (difficult) or Los Cristianos harbor parking (paid)"
+    }
   },
   {
     name: "Playa de la Tejita",
@@ -1327,8 +1790,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1499596395995-17d4a20bde15?auto=format&fit=crop&q=80&w=800",
     lat: 28.0315,
     lng: -16.5522,
-    address: "Carretera El Médano-Los Abrigos, 38612 El Médano",
-    website: "https://www.granadilladeabona.org"
+    address: "Carretera TF-643, 38612 El Médano",
+    website: "https://www.granadilladeabona.org",
+    amenities: {
+      sunLoungers: "None (Natural beach)",
+      umbrellas: "None (Bring your own wind shelter)",
+      showers: "None",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Natural dirt paths only", "No ramps to the sand"],
+      parking: "Large dirt parking area at the base of Montaña Roja (Free)"
+    }
   },
   {
     name: "Playa Fañabé",
@@ -1347,8 +1817,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0831,
     lng: -16.7371,
-    address: "Avenida de España, 38660 Costa Adeje",
-    website: "https://www.visitcostaadeje.com"
+    address: "Avenida Litoral, 38660 Costa Adeje",
+    website: "https://www.visitcostaadeje.com",
+    amenities: {
+      sunLoungers: "Plenty of rentals available (Approx. €8-10)",
+      umbrellas: "Standard rentals (Approx. €8-10)",
+      showers: "Several free open-air showers",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Wide ramps to the sand", "Accessible toilets nearby", "Level promenade access"],
+      parking: "Multiple public paid parking garages in the vicinity"
+    }
   },
   {
     name: "Playa de Abades",
@@ -1366,8 +1843,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.1444,
     lng: -16.4419,
-    address: "Calle del Mar, 38588 Abades",
-    website: "https://www.arico.es"
+    address: "Costa de Abades, 38588 Arico",
+    website: "https://www.arico.es",
+    amenities: {
+      sunLoungers: "None (Bring your own)",
+      umbrellas: "None",
+      showers: "One basic open-air shower by the ramp",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Concrete ramp to the top of the sand", "No specialized facilities"],
+      parking: "Street parking throughout the village (Free)"
+    }
   },
   {
     name: "Playa de la Arena",
@@ -1386,8 +1870,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.2294,
     lng: -16.8406,
-    address: "Avenida Marítima Puerto de Santiago, 38683 Puerto de Santiago",
-    website: "https://www.santiagodelteide.org"
+    address: "Avenida Marítima, 38683 Puerto de Santiago",
+    website: "https://www.santiagodelteide.org",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €6-8)",
+      umbrellas: "Available for rent (Approx. €6-8)",
+      showers: "Free open-air showers",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Ramp access from the main road", "Accessible toilets"],
+      parking: "Street parking available (often full), paid lot within 10 min walk"
+    }
   },
   {
     name: "Playa El Médano",
@@ -1406,8 +1897,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0458,
     lng: -16.5364,
-    address: "Plaza de El Médano, 38612 El Médano",
-    website: "https://www.granadilladeabona.org"
+    address: "Paseo Nuestra Señora de las Mercedes de Roja, 38612 El Médano",
+    website: "https://www.granadilladeabona.org",
+    amenities: {
+      sunLoungers: "Rentals available on the main town section (Approx. €6)",
+      umbrellas: "Available near the plaza (Approx. €6)",
+      showers: "Multiple free public showers on the promenade",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Wooden ramps to the high-tide mark", "Town plaza is fully level", "Accessible public toilets nearby"],
+      parking: "Public street parking (very difficult) or dedicated town lots (10 min walk)"
+    }
   },
   {
     name: "Playa de San Juan",
@@ -1427,7 +1925,14 @@ export const beaches = [
     lat: 28.1802,
     lng: -16.8153,
     address: "Avenida del Emigrante, 38687 Playa San Juan",
-    website: "https://www.guiaisora.org"
+    website: "https://www.guiaisora.org",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €6-8)",
+      umbrellas: "Available for rent (Approx. €6-8)",
+      showers: "Excellent free public showers",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Ramp access to the sand", "Accessible showers", "Special areas with shade"],
+      parking: "Large parking lot at the harbor (Free/Paid mix)"
+    }
   },
   {
     name: "Playa de los Guíos",
@@ -1446,8 +1951,15 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&q=80&w=800",
     lat: 28.2458,
     lng: -16.8436,
-    address: "Calle Poblado Marinero, 38683 Los Gigantes",
-    website: "https://www.santiagodelteide.org"
+    address: "Poblado Marinero, 38683 Los Gigantes",
+    website: "https://www.santiagodelteide.org",
+    amenities: {
+      sunLoungers: "Small selection for rent (Approx. €7-9)",
+      umbrellas: "Small selection for rent (Approx. €7-9)",
+      showers: "Free open-air showers",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Level access from the marina path", "Steep slopes in the village above"],
+      parking: "Harbor parking area (Paid) or street parking in the village (Difficult)"
+    }
   },
   {
     name: "Playa de la Enramada",
@@ -1467,7 +1979,14 @@ export const beaches = [
     lat: 28.1028,
     lng: -16.7533,
     address: "Calle La Enramada, 38679 La Caleta",
-    website: "https://www.visitcostaadeje.com"
+    website: "https://www.visitcostaadeje.com",
+    amenities: {
+      sunLoungers: "None (Natural pebble beach)",
+      umbrellas: "None",
+      showers: "One basic public shower near the chiringuitos",
+      accessibility: ["Pebble surface makes wheelchair access very difficult", "Level promenade access", "No accessible showers"],
+      parking: "Large dirt parking area nearby (Free)"
+    }
   },
   {
     name: "Playa La Pardela",
@@ -1485,7 +2004,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.0167,
     lng: -16.6917,
-    address: "Reserva Natural Especial del Malpaís de Rasca, 38632 Arona"
+    address: "Reserva Natural Especial del Malpaís de Rasca, 38632 Arona",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa de Diego Hernández",
@@ -1504,7 +2030,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
     lat: 28.1106,
     lng: -16.7611,
-    address: "La Caleta de Adeje, 38679 Adeje"
+    address: "La Caleta de Adeje, 38679 Adeje",
+    amenities: {
+      sunLoungers: "None (Raw nature)",
+      umbrellas: "None",
+      showers: "None",
+      accessibility: ["Accessible only by foot via rocky paths", "No wheelchair access", "No accessible showers"],
+      parking: "Park in La Caleta village (Free street parking)"
+    }
   },
   {
     name: "Playa de los Morteros",
@@ -1523,7 +2056,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.1067,
     lng: -16.7567,
-    address: "Costa de La Caleta, 38679 Adeje"
+    address: "Costa de La Caleta, 38679 Adeje",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa El Beril",
@@ -1541,7 +2081,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0944,
     lng: -16.7483,
-    address: "Urbanización Playa del Duque, 38679 Adeje"
+    address: "Urbanización Playa del Duque, 38679 Adeje",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa de El Bobo",
@@ -1559,7 +2106,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0694,
     lng: -16.7333,
-    address: "Calle Colon, 38660 Costa Adeje"
+    address: "Calle Colón, 38660 Costa Adeje",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa del Camisón",
@@ -1578,7 +2132,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0567,
     lng: -16.7317,
-    address: "Avenida de las Américas, s/n, 38660 Arona"
+    address: "Paseo Francisco Andrade Fumero, 38660 Arona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de los Cristianos",
@@ -1597,7 +2158,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1553912715-e23053a61691?auto=format&fit=crop&q=80&w=800",
     lat: 28.0494,
     lng: -16.7183,
-    address: "Paseo Juan Alfonso Batista, 38650 Los Cristianos"
+    address: "Avenida Juan Alfonso Batista, 38650 Los Cristianos",
+    amenities: {
+      sunLoungers: "Available for rent near the harbor (Approx. €6)",
+      umbrellas: "Available for rent (Approx. €6)",
+      showers: "Free public showers available",
+      accessibility: ["Wheelchair ramps not available", "No accessible showers", "Fully accessible with ramps to the sand", "Accessible harbor facilities"],
+      parking: "Large parking lot at the Los Cristianos harbor (Paid)"
+    }
   },
   {
     name: "Playa El Callao",
@@ -1615,7 +2183,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.0467,
     lng: -16.7117,
-    address: "Litoral de la Montaña de Guaza, 38650 Arona"
+    address: "Litoral de la Montaña de Guaza, 38650 Arona",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa La Arenita",
@@ -1633,7 +2208,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.0067,
     lng: -16.7050,
-    address: "Avenida El Palm-Mar, 38632 Palm-Mar"
+    address: "Avenida El Palm-Mar, 38632 Palm-Mar",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa de las Galletas",
@@ -1651,7 +2233,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1506929197327-fb87b5ee593d?auto=format&fit=crop&q=80&w=800",
     lat: 28.0083,
     lng: -16.6583,
-    address: "Paseo Marítimo de Las Galletas, 38631 Arona"
+    address: "Paseo Marítimo de Las Galletas, 38631 Arona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de Montaña Amarilla",
@@ -1669,7 +2258,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0078,
     lng: -16.6417,
-    address: "Monumento Natural de Montaña Amarilla, 38630 San Miguel de Abona"
+    address: "Monumento Natural de Montaña Amarilla, 38630 San Miguel de Abona",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa El Barranco",
@@ -1687,7 +2283,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.0267,
     lng: -16.6117,
-    address: "Urbanización Amarilla Golf, 38639 San Miguel de Abona"
+    address: "Urbanización Amarilla Golf, 38639 San Miguel de Abona",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa Grande (Arico)",
@@ -1705,7 +2308,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.1617,
     lng: -16.4317,
-    address: "Calle de la Playa, 38588 El Porís de Abona"
+    address: "Calle de la Playa, 38588 El Porís de Abona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa San Blas",
@@ -1723,7 +2333,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0294,
     lng: -16.6033,
-    address: "Urbanización San Blas, 38639 San Miguel de Abona"
+    address: "Urbanización San Blas, 38639 San Miguel de Abona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa El Horno (Confital)",
@@ -1741,7 +2358,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0289,
     lng: -16.5650,
-    address: "Camino del Confital, 38612 Granadilla de Abona"
+    address: "Camino del Confital, 38612 Granadilla de Abona",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Caleta de la Tejita",
@@ -1759,7 +2383,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0306,
     lng: -16.5567,
-    address: "Coastal Path, 38612 Granadilla de Abona"
+    address: "Coastal Path, 38612 Granadilla de Abona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "La Playita",
@@ -1777,7 +2408,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0439,
     lng: -16.5358,
-    address: "Muelle de El Médano, 38612 Granadilla de Abona"
+    address: "Muelle de El Médano, 38612 Granadilla de Abona",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Los Refugios",
@@ -1795,7 +2433,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0517,
     lng: -16.5267,
-    address: "Costa de El Médano, 38612 Granadilla de Abona"
+    address: "Costa de El Médano, 38612 Granadilla de Abona",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "La Playa Bocinegro",
@@ -1813,7 +2458,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.0350,
     lng: -16.5417,
-    address: "Reserva Natural Especial de Montaña Roja, 38612 Granadilla"
+    address: "Reserva Natural Especial de Montaña Roja, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Calita Marea Baja",
@@ -1831,7 +2483,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0444,
     lng: -16.5389,
-    address: "Litoral de El Médano, 38612 Granadilla"
+    address: "Litoral de El Médano, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de Montaña Roja",
@@ -1849,7 +2508,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1499596395995-17d4a20bde15?auto=format&fit=crop&q=80&w=800",
     lat: 28.0311,
     lng: -16.5494,
-    address: "Base de Montaña Roja, 38612 Granadilla de Abona"
+    address: "Base de Montaña Roja, 38612 Granadilla de Abona",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de Leocadio Machado",
@@ -1867,7 +2533,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1502447463212-00d98418f4a1?auto=format&fit=crop&q=80&w=800",
     lat: 28.0422,
     lng: -16.5417,
-    address: "Avenida Juan Carlos I, 38612 El Médano"
+    address: "Avenida Juan Carlos I, 38612 El Médano",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa El Salado",
@@ -1885,7 +2558,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0533,
     lng: -16.5233,
-    address: "Litoral de El Salado, 38612 Granadilla"
+    address: "Litoral de El Salado, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de la Jaquita",
@@ -1903,7 +2583,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0506,
     lng: -16.5294,
-    address: "Avenida de la Jaquita, 38612 El Médano"
+    address: "Avenida de la Jaquita, 38612 El Médano",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Caleta del Medio",
@@ -1921,7 +2608,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0472,
     lng: -16.5333,
-    address: "Paseo de El Médano, 38612 Granadilla"
+    address: "Paseo de El Médano, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa Montaña Pelada",
@@ -1939,7 +2633,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
     lat: 28.0617,
     lng: -16.5167,
-    address: "Monumento Natural de Montaña Pelada, 38612 Granadilla"
+    address: "Monumento Natural de Montaña Pelada, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa La Bajanuda",
@@ -1957,7 +2658,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.1833,
     lng: -16.3833,
-    address: "Litoral de Arico, 38588 Arico"
+    address: "Litoral de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa La Grieta",
@@ -1975,7 +2683,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.1500,
     lng: -16.4250,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de la Rajita",
@@ -1993,7 +2708,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0589,
     lng: -16.5194,
-    address: "Litoral de Granadilla, 38612 Granadilla"
+    address: "Litoral de Granadilla, 38612 Granadilla",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Punta del Chanquito",
@@ -2011,7 +2733,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.1750,
     lng: -16.3917,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa Escondida",
@@ -2029,7 +2758,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.2050,
     lng: -16.3667,
-    address: "Costa de Fasnia, 38579 Fasnia"
+    address: "Costa de Fasnia, 38579 Fasnia",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa callaos de Las Maretas",
@@ -2047,7 +2783,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.1067,
     lng: -16.4417,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "La Caleta de Arico",
@@ -2065,7 +2808,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.1133,
     lng: -16.4333,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de Coyado Hondo",
@@ -2083,7 +2833,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.1550,
     lng: -16.4217,
-    address: "Litoral de Arico, 38588 Arico"
+    address: "Litoral de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa De Tajao",
@@ -2101,7 +2858,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1553912715-e23053a61691?auto=format&fit=crop&q=80&w=800",
     lat: 28.1100,
     lng: -16.4717,
-    address: "Paseo de Tajao, 38588 Arico"
+    address: "Paseo de Tajao, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Cala De Tajao",
@@ -2119,7 +2883,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.1067,
     lng: -16.4750,
-    address: "Costa de Tajao, 38588 Arico"
+    address: "Costa de Tajao, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Las Bajas del Sordo",
@@ -2137,7 +2908,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.1017,
     lng: -16.4483,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa del Sordo",
@@ -2155,7 +2933,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.0983,
     lng: -16.4533,
-    address: "Litoral de Arico, 38588 Arico"
+    address: "Litoral de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa de la Jaca",
@@ -2173,7 +2958,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.1183,
     lng: -16.4267,
-    address: "Calle de la Marina, 38588 La Jaca"
+    address: "Calle de la Marina, 38588 La Jaca",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de los Abrigos",
@@ -2191,7 +2983,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.0283,
     lng: -16.5917,
-    address: "Paseo Maritimo de Los Abrigos, 38618 Granadilla"
+    address: "Paseo Maritimo de Los Abrigos, 38618 Granadilla",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa de los Abriguitos",
@@ -2210,7 +3009,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.1444,
     lng: -16.4417,
-    address: "Plaza de Abades, 38588 Arico"
+    address: "Plaza de Abades, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa Cardones",
@@ -2228,7 +3034,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.1333,
     lng: -16.4333,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa Cueva de la Arena",
@@ -2246,7 +3059,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.1583,
     lng: -16.4267,
-    address: "Litoral de Arico, 38588 Arico"
+    address: "Litoral de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Caleta del Cura",
@@ -2264,7 +3084,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=800",
     lat: 28.1467,
     lng: -16.4317,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa de Porís de Abona",
@@ -2282,7 +3109,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.1650,
     lng: -16.4294,
-    address: "Paseo del Poris, 38588 Arico"
+    address: "Paseo del Poris, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Playa de las Ceras",
@@ -2300,7 +3134,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1619551734325-81aad3dd36ee?auto=format&fit=crop&q=80&w=800",
     lat: 28.1917,
     lng: -16.3783,
-    address: "Litoral de Arico, 38588 Arico"
+    address: "Litoral de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "None (Natural environment)",
+      umbrellas: "None (Bring your own)",
+      showers: "None",
+      accessibility: ["Natural terrain only", "No wheelchair ramps", "No accessible showers"],
+      parking: "Dirt parking nearby or street parking (Free)"
+    }
   },
   {
     name: "Playa Honda",
@@ -2318,7 +3159,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&q=80&w=800",
     lat: 28.0581,
     lng: -16.7336,
-    address: "Paseo Marítimo, 38660 Playa de las Américas"
+    address: "Paseo Marítimo, 38660 Playa de las Américas",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   },
   {
     name: "Playa El Bonito",
@@ -2336,7 +3184,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.1283,
     lng: -16.4294,
-    address: "Costa de Arico, 38588 Arico"
+    address: "Costa de Arico, 38588 Arico",
+    amenities: {
+      sunLoungers: "Limited or None",
+      umbrellas: "Limited or None",
+      showers: "Basic open-air showers",
+      accessibility: ["Partial ramp access", "No accessible showers", "Uneven terrain in places"],
+      parking: "Street parking (Free)"
+    }
   },
   {
     name: "Cala Mimar",
@@ -2354,7 +3209,14 @@ export const beaches = [
     image: "https://images.unsplash.com/photo-1544923246-77307da8547a?auto=format&fit=crop&q=80&w=800",
     lat: 28.0050,
     lng: -16.7117,
-    address: "Urbanización Palm-Mar, 38632 Arona"
+    address: "Urbanización Palm-Mar, 38632 Arona",
+    amenities: {
+      sunLoungers: "Available for rent (Approx. €5-10)",
+      umbrellas: "Available for rent (Approx. €5-10)",
+      showers: "Free public open-air showers available",
+      accessibility: ["Wheelchair ramps to the sand", "Accessible showers available", "Promenade access is fully level"],
+      parking: "Public street parking (Paid/Free) or underground garages nearby"
+    }
   }
 ];
 
@@ -2375,7 +3237,7 @@ export const naturalPools = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.2017,
     lng: -16.8333,
-    address: "Paseo Maritimo de Alcalá, 38686 Guía de Isora",
+    address: "Avenida del Pescador, 38686 Alcalá",
     website: "https://www.guiadeisora.es"
   },
   {
@@ -2394,7 +3256,7 @@ export const naturalPools = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.2394,
     lng: -16.8417,
-    address: "Urbanización Isla Cangrejo, 38683 Puerto de Santiago",
+    address: "Urbanización Isla Cangrejo, 38683 Santiago del Teide",
     website: "https://www.santiagodelteide.org"
   },
   {
@@ -2432,7 +3294,7 @@ export const naturalPools = [
     image: "https://images.unsplash.com/photo-1506929197327-fb87b5ee593d?auto=format&fit=crop&q=80&w=800",
     lat: 28.2383,
     lng: -16.8428,
-    address: "Urbanización Los Gigantes, 38683 Santiago del Teide",
+    address: "Calle el Lomo, 38683 Puerto de Santiago",
     website: "https://www.santiagodelteide.org"
   },
   {
@@ -2470,7 +3332,7 @@ export const naturalPools = [
     image: "https://images.unsplash.com/photo-1544526226-d4568090ffb8?auto=format&fit=crop&q=80&w=800",
     lat: 28.1250,
     lng: -16.4167,
-    address: "Litoral de La Puente, 38588 Arico",
+    address: "Costa de La Quinta, 38588 Arico",
     website: "https://www.arico.es"
   },
   {
@@ -2489,7 +3351,7 @@ export const naturalPools = [
     image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800",
     lat: 28.1667,
     lng: -16.3833,
-    address: "Costa de Fasnia, 38579 Santa Cruz de Tenerife",
+    address: "Paseo Marítimo Los Roques, 38579 Fasnia",
     website: "https://www.fasnia.com"
   },
   {
