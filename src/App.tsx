@@ -17,6 +17,7 @@ import puertoSantiagoGif from './assets/images/puerto-santiago-cliffs-view.gif';
 import mascaGif from './assets/images/masca-mountain-village.gif';
 import alcalaGif from './assets/images/alcala-fishing-village.gif';
 import abadesTerraceJpg from './assets/images/abades-ocean-deck-house-terrace.jpg';
+import { memo, useMemo, useCallback } from 'react';
 import { 
   format, 
   addMonths, 
@@ -51,6 +52,26 @@ const API_KEY =
   '';
 const hasValidKey = Boolean(API_KEY) && API_KEY !== 'YOUR_API_KEY';
 
+
+const CurrentTimeHeader = () => {
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+  return <>{time.toLocaleTimeString('en-GB', { timeZone: 'Atlantic/Canary', hour12: false, hour: '2-digit', minute: '2-digit' })}</>;
+};
+
+
+const CurrentTimeFooter = () => {
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  return <>{time.toLocaleTimeString('en-GB', { timeZone: 'Atlantic/Canary', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })}</>;
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -59,8 +80,7 @@ export default function App() {
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [weather, setWeather] = useState<{temp: number, code: number} | null>(null);
+    const [weather, setWeather] = useState<{temp: number, code: number} | null>(null);
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem('beaches_favorites');
     return saved ? JSON.parse(saved) : [];
@@ -90,7 +110,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     
     // Fetch weather for TFS (Tenerife South Airport)
     fetch('https://api.open-meteo.com/v1/forecast?latitude=28.0445&longitude=-16.5144&current_weather=true')
@@ -105,7 +124,6 @@ export default function App() {
       })
       .catch(err => console.error("Weather fetch failed", err));
 
-    return () => clearInterval(timer);
   }, []);
 
   const t = i18n[lang];
@@ -184,6 +202,7 @@ export default function App() {
       <Helmet>
         <title>{seoData.title}</title>
         <meta name="description" content={seoData.description} />
+        <link rel="preload" as="image" href={regeneratedImage1} />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -262,12 +281,7 @@ export default function App() {
             <div className="flex flex-col">
               <span className="text-[9px] tracking-[0.3em] text-[#F27D26] uppercase font-black mb-2">{t.localTime}</span>
               <span className="text-2xl font-light text-white tracking-tight">
-                {currentTime.toLocaleTimeString('en-GB', { 
-                  timeZone: 'Atlantic/Canary', 
-                  hour12: false,
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
+                <CurrentTimeHeader />
               </span>
             </div>
             
@@ -406,15 +420,15 @@ export default function App() {
                 })}
               </nav>
 
-              <div className="mt-auto p-8 flex-shrink-0 bg-white/[0.02] border-t border-white/5">
-                <div className="flex flex-col gap-4 mb-8">
+              <div className="mt-auto p-4 md:p-8 flex-shrink-0 bg-white/[0.02] border-t border-white/5">
+                <div className="flex flex-col gap-2 mb-4">
                   <span className="text-[10px] tracking-widest text-white/30 uppercase">{t.language}</span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
                     {languages.map((l) => (
                       <button
                         key={l.code}
                         onClick={() => setLang(l.code)}
-                        className={`text-[12px] font-bold tracking-[0.2em] uppercase px-3 py-2 border transition-all ${
+                        className={`text-[12px] font-bold tracking-[0.2em] uppercase px-4 py-2 border transition-all flex-shrink-0 ${
                           lang === l.code 
                             ? 'text-black bg-[#F27D26] border-[#F27D26]' 
                             : 'text-white/30 border-white/10 active:border-white/30 hover:border-white/40'
@@ -479,13 +493,7 @@ export default function App() {
             <div className="flex flex-col">
               <span className="text-[9px] uppercase opacity-30 mb-1 tracking-widest text-[#F27D26]">{t.currentTime}</span>
               <span className="text-xs font-mono text-white/60">
-                {currentTime.toLocaleTimeString('en-GB', { 
-                  timeZone: 'Atlantic/Canary', 
-                  hour12: false,
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                })}
+                <CurrentTimeFooter />
               </span>
             </div>
             <div className="flex flex-col">
@@ -566,7 +574,7 @@ function AbadesAdBanner({ t, onClose }: { t: any; onClose: () => void }) {
         >
           <X size={16} />
         </button>
-        <img 
+        <img loading="lazy" fetchPriority="auto" 
           src={abadesTerraceJpg} 
           alt="Abades Ocean Deck House"
           className="w-full h-44 object-cover"
@@ -706,7 +714,7 @@ function ItemDetailModal({ item, onClose, lang, t, favorites, onToggleFavorite }
             className="h-64 md:h-80 w-full flex-shrink-0 relative cursor-pointer group/img overflow-hidden"
             onClick={() => setIsFullScreenImageOpen(true)}
           >
-            <img 
+            <img loading="lazy" fetchPriority="auto" 
               src={
                 item.name === 'Los Cristianos' ? losCristianosGif : 
                 item.name === 'Costa Adeje' ? costAdejeGif : 
@@ -1197,8 +1205,7 @@ function OverviewSection({ t, onImageClick }: { t: any; onImageClick: (src: stri
           className="aspect-[3/4] border border-white/10 overflow-hidden relative cursor-zoom-in"
           onClick={() => onImageClick(regeneratedImage1)}
         >
-           <img 
-            src={regeneratedImage1} 
+           <img fetchPriority="high" src={regeneratedImage1} 
             alt={t.iconicAbades} 
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover opacity-80 group-hover/canvas:opacity-100 group-hover/canvas:scale-105 transition-all duration-1000"
@@ -1293,7 +1300,7 @@ function DestinationsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
                   onClick={() => onSelect(dest)}
                 >
                   <div className="h-[300px] overflow-hidden border border-white/10 relative group-hover:border-[#F27D26]/50 transition-all duration-500 shadow-2xl shadow-transparent group-hover:shadow-[#F27D26]/20">
-                    <img 
+                    <img loading="lazy" fetchPriority="auto" 
                       src={
                         dest.name === 'Los Cristianos' ? losCristianosGif : 
                         dest.name === 'Costa Adeje' ? costAdejeGif : 
@@ -1545,7 +1552,7 @@ function LocalEatsSection({ onSelect, t, searchQuery }: { onSelect: (item: Resta
           className="group cursor-pointer"
         >
           <div className="aspect-[16/10] overflow-hidden bg-white/5 mb-4 border border-white/5 relative">
-            <img 
+            <img loading="lazy" fetchPriority="auto" 
               src={eat.image} 
               alt={eat.name} 
               referrerPolicy="no-referrer"
@@ -1657,7 +1664,7 @@ function PartySection({ onSelect, t, searchQuery }: { onSelect: (item: any) => v
                   className="group cursor-pointer bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden flex flex-col"
                 >
                   <div className="aspect-[4/3] overflow-hidden relative">
-                    <img 
+                    <img loading="lazy" fetchPriority="auto" 
                       src={club.image} 
                       alt={club.name} 
                       className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
@@ -1715,7 +1722,7 @@ function PartySection({ onSelect, t, searchQuery }: { onSelect: (item: any) => v
                   className="flex bg-white/5 border border-white/10 hover:border-[#F27D26]/50 transition-all cursor-pointer overflow-hidden group"
                 >
                   <div className="w-1/3 aspect-square overflow-hidden relative border-r border-white/10">
-                    <img 
+                    <img loading="lazy" fetchPriority="auto" 
                       src={event.image} 
                       alt={event.name} 
                       className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-80"
@@ -1873,7 +1880,7 @@ function NaturalPoolsSection({ onSelect, t, searchQuery }: { onSelect: (item: an
                 className="group cursor-pointer flex flex-col h-full bg-white/[0.02] border border-white/5 hover:border-[#F27D26]/30 transition-all overflow-hidden"
               >
                 <div className="aspect-[16/10] overflow-hidden relative">
-                  <img 
+                  <img loading="lazy" fetchPriority="auto" 
                     src={pool.image} 
                     alt={pool.name} 
                     referrerPolicy="no-referrer"
@@ -2068,7 +2075,7 @@ function AgendaSection({ onSelect, t, searchQuery, lang }: { onSelect: (item: an
                       onClick={() => onSelect(event)}
                     >
                       <div className="h-40 overflow-hidden relative">
-                        <img 
+                        <img loading="lazy" fetchPriority="auto" 
                           src={event.image} 
                           alt={event.name} 
                           referrerPolicy="no-referrer" 
